@@ -17,3 +17,6 @@ Map<int, Color> colorSwatchMap =
 getColorSwatch(){
   return colorSwatchMap;
 }
+
+const String LOGO_IMAGE_PATH = 'assets/images/brainary_logo.jpg';
+const MINI_LOGO_IMAGE_PATH = 'assets/images/logo-mini.jpg';
