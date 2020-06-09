@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "570197924344",
+    "firebase_url": "https://brainary-c9576.firebaseio.com",
+    "project_id": "brainary-c9576",
+    "storage_bucket": "brainary-c9576.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570197924344:android:c25e60fdcb613a92f61e0d",
+        "android_client_info": {
+          "package_name": "com.brainary.brainary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570197924344-h0j3k2suvku30bnqn4718b7nnaokdpi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9iwLgn2kODRob8Nv5r3ea4fKnbGCToz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "570197924344-h0j3k2suvku30bnqn4718b7nnaokdpi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

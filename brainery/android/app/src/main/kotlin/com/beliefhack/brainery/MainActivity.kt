@@ -1,0 +1,6 @@
+package com.beliefhack.brainery
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
