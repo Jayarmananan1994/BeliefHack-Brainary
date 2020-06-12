@@ -1,4 +1,5 @@
 import 'package:brainery/commons/constants.dart';
+import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/splash_screen/splash_screen.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: MaterialColor(0xff315192, colorSwatchMap), //Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: SplashScreen.PATH,
+      initialRoute: LandingTab.PATH,
       debugShowCheckedModeBanner: false,
     );
   }

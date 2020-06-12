@@ -39,6 +39,7 @@ class MyFlutterAppIcons {
 
   static const IconData clock = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData book_open = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData library_books = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData pinterest_circled = IconData(0xf0d2, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData google = IconData(0xf1a0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData facebook = IconData(0xf30c, fontFamily: _kFontFam, fontPackage: _kFontPkg);

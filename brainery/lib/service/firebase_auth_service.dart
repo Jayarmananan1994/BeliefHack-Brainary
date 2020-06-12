@@ -28,8 +28,11 @@ class FireBaseAuthService extends AuthService {
   @override
   Future<BraineryUser> getCurrentSignedInUser() async {
     var firebaseAuth = getFirebaseAuth();
+    
     if(_currentSignedInUser==null){
       FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+      print('Firebase>>>>>>>>>');
+      print(firebaseUser);
       if(firebaseUser==null){
           return null;
       }

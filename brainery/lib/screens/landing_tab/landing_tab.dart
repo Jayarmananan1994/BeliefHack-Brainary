@@ -2,6 +2,7 @@ import 'package:brainery/commons/constants.dart';
 import 'package:brainery/commons/my_flutter_app_icons.dart';
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/screens/landing_tab/brainery_drawer.dart';
+import 'package:brainery/screens/landing_tab/home/home.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,9 @@ class _LandingTabState extends State<LandingTab> {
   BraineryUser _currentUser;
   AuthService _authService = locator<AuthService>();
   int _selectedTab = 0;
-  static const List<Widget> _tabList = [
-    Center(child: Text('Home Tab comes here')),
+  static List<Widget> _tabList = [
+     Home(),
+    //Center(child: Text('Home Tab comes here')),
     Center(child: Text('Lesson Tab comes here')),
     Center(child: Text('Course Tab comes here')),
     Center(child: Text('Timer Tab comes here')),
@@ -28,7 +30,7 @@ class _LandingTabState extends State<LandingTab> {
   static List<TabMenu> _tabMenus = [
     TabMenu(0, 'HOME', Icons.home),
     TabMenu(1, 'LESSONS', MyFlutterAppIcons.book_open),
-    TabMenu(2, 'COURSES', Icons.home),
+    TabMenu(2, 'COURSES', MyFlutterAppIcons.library_books),
     TabMenu(3, 'TIMER', MyFlutterAppIcons.clock),
     TabMenu(4, 'FAVORITES', Icons.favorite_border),
   ];
@@ -74,7 +76,7 @@ class _LandingTabState extends State<LandingTab> {
   appTitle(context) {
     return Column(
       children: <Widget>[
-        Text('BELIEFHACK Brainery',
+        Text('BELIEFHACK BRAINERY',
             style: TextStyle(color: Theme.of(context).primaryColor)),
         FutureBuilder<BraineryUser>(
             future: _authService.getCurrentSignedInUser(),
@@ -84,24 +86,12 @@ class _LandingTabState extends State<LandingTab> {
                 return Text(snapshot.data.name,
                     style: TextStyle(color: Colors.grey, fontSize: 15));
               }else{
-                return Text('Shimmer efect will come here');
+                return Text('Leon J Morton', style: TextStyle(fontSize: 14, color: Colors.grey));
               }
             }),
       ],
     );
   }
-
-  // void loadSignedInUser() {
-  //   _currentUser = await _authService.getCurrentSignedInUser();
-  //   if (_currentUser == null) {
-  //     _authService.autoSigninEmailUser(appUid).then((value) {
-  //       _currentUser = value;
-  //       setState(() {
-  //         _currentUserName = value.name;
-  //       });
-  //     });
-  //   }
-  // }
 
   void _onItemTapped(int index) {
     setState(() {
