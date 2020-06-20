@@ -1,5 +1,6 @@
 import 'package:brainery/model/BraineryFavorites.dart';
 import 'package:brainery/screens/landing_tab/favorites/fav_shimmer_layout.dart';
+import 'package:brainery/screens/landing_tab/favorites/no_favorites.dart';
 import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _FavoritesState extends State<Favorites> {
           var favorites = snapshot.data;
           var lessons = favorites.braineryLessonFav;
           var courses = favorites.braineryCourseFav;
-          return Column(
+          return (lessons.length==0 && courses.length==0) ? NoFavorites(): Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               _title('LESSONS'),
