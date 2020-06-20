@@ -10,20 +10,20 @@ class SlidePageTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SkipButton(),
+            SkipButton(buttonText: 'Done'),
             _logo(),
-            SizedBox(height: 20),
+            //SizedBox(height: 20),
             _instructionOne(),
-            SizedBox(height: 20),
+            //SizedBox(height: 20),
             _instructionTwo(),
-            SizedBox(height: 20),
+            //SizedBox(height: 20),
             _instructionThree(),
-            SizedBox(height: height * 0.08),
+            //SizedBox(height: height * 0.08),
             decorationLine(width),
             _facebookIcon()
           ],
@@ -115,7 +115,7 @@ class SlidePageTwo extends StatelessWidget {
 
   _facebookIcon() {
     return Container(
-      margin: EdgeInsets.all(25),
+      margin: EdgeInsets.all(30),
         child: RaisedButton(
             onPressed: () {},
             color: Colors.blue,

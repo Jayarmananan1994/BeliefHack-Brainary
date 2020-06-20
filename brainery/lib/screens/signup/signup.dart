@@ -13,7 +13,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   double _height;
-  ImageProvider logoImage = AssetImage(LOGO_IMAGE_PATH);
+  ImageProvider logoImage = AssetImage(LOGO_IMAGE_BLUE_PATH);
 
   @override
   Widget build(BuildContext context) {

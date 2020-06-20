@@ -18,8 +18,9 @@ getColorSwatch(){
   return colorSwatchMap;
 }
 
-const String LOGO_IMAGE_PATH = 'assets/images/brainery_logo.jpg';
-const MINI_LOGO_IMAGE_PATH = 'assets/images/logo-mini.jpg';
+const String LOGO_IMAGE_PATH = 'assets/images/brainery_logo.png';
+const String LOGO_IMAGE_BLUE_PATH = 'assets/images/brainery_logo.jpg';
+const MINI_LOGO_IMAGE_PATH = 'assets/images/logo-mini.png';
 const SPLASH_SCREEN_IMAGE = 'assets/images/splash.jpg';
 const LOADING_IMAGE_PATH = 'assets/images/loading.gif';
 const INTRO_VIDEO_URL = 'https://firebasestorage.googleapis.com/v0/b/brainary-c9576.appspot.com/o/vipifoziwkb?alt=media&token=98f55549-bab3-4a1a-8fc4-08947f5d0784';

@@ -13,7 +13,7 @@ class IntroVideoPlayer extends StatefulWidget {
 class _IntroVideoPlayerState extends State<IntroVideoPlayer> {
   //VideoPlayerController _controller;
   //Future<void> _initializeVideoPlayerFuture;
-  bool showControllButton = true;
+  bool showControllButton = false;
   @override
   void initState() {
     super.initState();
@@ -21,7 +21,6 @@ class _IntroVideoPlayerState extends State<IntroVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    print('>>>>>Aspect ratio:'+widget.controller.value.aspectRatio.toString());
     return AspectRatio(
       aspectRatio: widget.controller.value.aspectRatio,
       child: Stack(

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class Home extends StatefulWidget {
+  final Function viewCourseAction;
+  Home({this.viewCourseAction});
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -20,8 +23,6 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           _sessionPanel(),
           _featuredStudy(),
-          //SizedBox(height: 30),
-          //Expanded(child: Align(alignment: Alignment.bottomCenter, child: _viewCourseButton())),
           _viewCourseButton()
         ],
       ),
@@ -66,9 +67,12 @@ class _HomeState extends State<Home> {
         pannelHeader('FEATURED STUDY', 'VIEW ALL'),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: BraineryVideoPlayer(
-              controller: featuredVideoController,
-              imageProvider: NetworkImage(INTRO_VIDEO_THUMBNAIL)),
+          child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                      child: BraineryVideoPlayer(
+                controller: featuredVideoController,
+                imageProvider: NetworkImage(INTRO_VIDEO_THUMBNAIL)),
+          ),
         )
       ],
     );
@@ -104,7 +108,9 @@ class _HomeState extends State<Home> {
         child: RaisedButton(
             padding: EdgeInsets.all(0),
             textColor: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              widget.viewCourseAction();
+            },
             child: Container(
                 padding: const EdgeInsets.all(14.0),
                 decoration: BoxDecoration(

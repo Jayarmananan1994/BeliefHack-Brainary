@@ -16,7 +16,7 @@ class FireBaseAuthService extends AuthService {
     AuthResult result = await getFirebaseAuth()
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    BraineryUser newUser = new BraineryUser(result.user.uid, name, email);
+    BraineryUser newUser = new BraineryUser(result.user.uid, name, email, [],[]);
     await getFirestore()
         .collection('users')
         .document(newUser.uid)
@@ -27,23 +27,21 @@ class FireBaseAuthService extends AuthService {
 
   @override
   Future<BraineryUser> getCurrentSignedInUser() async {
-    var firebaseAuth = getFirebaseAuth();
-    
     if(_currentSignedInUser==null){
+      var firebaseAuth = getFirebaseAuth();
       FirebaseUser firebaseUser = await firebaseAuth.currentUser();
-      print('Firebase>>>>>>>>>');
-      print(firebaseUser);
       if(firebaseUser==null){
           return null;
       }
       DocumentSnapshot result= await getFirestore().collection('users').document(firebaseUser.uid).get();
-      return BraineryUser.fromFirestoreDcoument(result);
+      _currentSignedInUser =  BraineryUser.fromFirestoreDcoument(result);
+      return _currentSignedInUser;
     }else{
       return _currentSignedInUser;
     }
   }
 
-  setCurrentUser(BraineryUser user) {
+  void setCurrentUser(BraineryUser user) {
     _currentSignedInUser = user;
   }
 

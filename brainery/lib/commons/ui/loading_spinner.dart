@@ -28,7 +28,6 @@ class _LoadingSpinnerState extends State<LoadingSpinner>
     radius = widget.radius;
     dotRadius = widget.dotRadius;
 
-
     controller = AnimationController(
         lowerBound: 0.0,
         upperBound: 1.0,
@@ -74,7 +73,8 @@ class _LoadingSpinnerState extends State<LoadingSpinner>
 
   @override
   Widget build(BuildContext context) {
-    List dots = [0, 1, 2, 3, 4, 5, 6, 7].map((e) => createDot(e)).toList();
+    List<Widget> dots =
+        [0, 1, 2, 3, 4, 5, 6, 7].map((e) => createDot(e)).toList();
 
     return Container(
       width: 100.0,
@@ -86,98 +86,7 @@ class _LoadingSpinnerState extends State<LoadingSpinner>
           child: new Container(
             //color: Colors.limeAccent,
             child: new Center(
-              child: Stack(
-                children: dots,
-                // children: <Widget>[
-                //   new Transform.translate(
-                //     offset: Offset(0.0, 0.0),
-                //     child: Dot(
-                //       radius: radius,
-                //       color: Colors.black12,
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.amber,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0),
-                //       radius * sin(0.0),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.deepOrangeAccent,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 1 * pi / 4),
-                //       radius * sin(0.0 + 1 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.pinkAccent,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 2 * pi / 4),
-                //       radius * sin(0.0 + 2 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.purple,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 3 * pi / 4),
-                //       radius * sin(0.0 + 3 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.yellow,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 4 * pi / 4),
-                //       radius * sin(0.0 + 4 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.lightGreen,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 5 * pi / 4),
-                //       radius * sin(0.0 + 5 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.orangeAccent,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 6 * pi / 4),
-                //       radius * sin(0.0 + 6 * pi / 4),
-                //     ),
-                //   ),
-                //   new Transform.translate(
-                //     child: Dot(
-                //       radius: dotRadius,
-                //       color: Colors.blueAccent,
-                //     ),
-                //     offset: Offset(
-                //       radius * cos(0.0 + 7 * pi / 4),
-                //       radius * sin(0.0 + 7 * pi / 4),
-                //     ),
-                //   ),
-                // ],
-              ),
+              child: Stack(children: dots),
             ),
           ),
         ),
@@ -191,7 +100,7 @@ class _LoadingSpinnerState extends State<LoadingSpinner>
     super.dispose();
   }
 
-  createDot(int e) {
+  Widget createDot(int e) {
     Color color =
         (e % 2 == 0) ? Theme.of(context).primaryColor : Colors.lightBlue;
     return Transform.translate(

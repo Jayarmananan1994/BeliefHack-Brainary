@@ -163,18 +163,16 @@ class _SignupFormState extends State<SignupForm> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          child: Card(
-            child: Container(
-              width: 300,
-              height: 100,
-              child: Center(
-                  child: Row(
-                children: <Widget>[
-                  LoadingSpinner(radius: 15.0, dotRadius: 5.0),
-                  Text('Please hold on.'),
-                ],
-              )),
-            ),
+          child: Container(
+            width: 300,
+            height: 100,
+            child: Center(
+                child: Row(
+              children: <Widget>[
+                LoadingSpinner(radius: 15.0, dotRadius: 5.0),
+                Text('Please hold on.'),
+              ],
+            )),
           ),
         );
       },

@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SkipButton extends StatelessWidget {
+  final String buttonText;
   final AuthService _authService = locator<AuthService>();
+
+  SkipButton({@required this.buttonText});
+
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
@@ -22,7 +26,7 @@ class SkipButton extends StatelessWidget {
                   context, pathToGo, (r) => false);
             });
           },
-          child: Text('Skip', style: TextStyle(color: Colors.white)))
+          child: Text( buttonText, style: TextStyle(color: Colors.white)))
     ]);
   }
 }

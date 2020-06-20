@@ -52,13 +52,13 @@ class SplashScreen extends StatelessWidget {
             image: DecorationImage(
                 image: AssetImage(SPLASH_SCREEN_IMAGE), fit: BoxFit.cover)),
       ),
-      Positioned(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-        ),
-        bottom: 75,
-        left: width * 0.5,
-      )
+      // Positioned(
+      //   child: CircularProgressIndicator(
+      //     backgroundColor: Colors.white,
+      //   ),
+      //   bottom: 75,
+      //   left: width * 0.5,
+      // )
     ]);
   }
 }

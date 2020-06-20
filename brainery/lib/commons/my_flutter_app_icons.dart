@@ -40,10 +40,19 @@ class MyFlutterAppIcons {
   static const IconData clock = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData book_open = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData library_books = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData forward_10 = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData replay_10 = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData volume_off = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData podcast = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData pinterest_circled = IconData(0xf0d2, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_down = IconData(0xf107, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_circled_down = IconData(0xf13a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData google = IconData(0xf1a0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData podcast_1 = IconData(0xf2ce, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData facebook = IconData(0xf30c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData facebook_circled = IconData(0xf30d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData facebook_squared = IconData(0xf30e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData book_open_2 = IconData(0xf518, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData volume_mute = IconData(0xf6a9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+
 }

@@ -17,22 +17,29 @@ class _SlidePageOneState extends State<SlidePageOne> {
   TextStyle _defaultTextStyle = TextStyle(color: Color(0xff8b97bc));
 
   @override
+  void initState() {
+    widget.controller.play();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5),
         child: Column(
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            SkipButton(),
+            SkipButton(buttonText: 'Skip'),
             logo(),
             SizedBox(height: 20),
             ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: IntroVideoPlayer(controller: widget.controller)),
             Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text('Welcome to the',
-                    style: TextStyle(color: Color(0xff8b97bc), fontSize: 30))),
+                    style: TextStyle(color: Colors.grey, fontSize: 30))),
             Text('Brainery!',
                 style: TextStyle(
                     color: Colors.white,

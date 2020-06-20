@@ -85,8 +85,8 @@ class _BraineryVideoPlayerState extends State<BraineryVideoPlayer> {
 
   _previewScreen() {
     return Container(
-      //color: Colors.black,
       decoration: BoxDecoration(
+        color: Colors.black,
         image: DecorationImage(image: widget.imageProvider, fit: BoxFit.cover),
       ),
       child: _dummyLoader(),

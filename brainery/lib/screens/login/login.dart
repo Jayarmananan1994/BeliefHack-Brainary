@@ -1,5 +1,6 @@
 import 'package:brainery/commons/constants.dart';
 import 'package:brainery/commons/ui/error_dialog.dart';
+import 'package:brainery/commons/ui/loading_spinner.dart';
 import 'package:brainery/commons/validators.dart';
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/signup/signup.dart';
@@ -20,7 +21,7 @@ class _LoginState extends State<Login> {
   bool _autoValidate = false, passwordVisible = true;
   AuthService _authService = locator<AuthService>();
   double _height, _width;
-  ImageProvider logoImage = AssetImage(LOGO_IMAGE_PATH);
+  ImageProvider logoImage = AssetImage(LOGO_IMAGE_BLUE_PATH);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +121,7 @@ class _LoginState extends State<Login> {
             constraints: BoxConstraints(maxWidth: 500.0, minHeight: 100.0),
             alignment: Alignment.center,
             child: Text(
-              "APPLY",
+              "SIGN IN",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
             ),
@@ -141,6 +142,7 @@ class _LoginState extends State<Login> {
   void confirmSignin() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      showLoadingDialog();
       _authService.signinWithEmail(emailVal, passwordVal).then((value) {
         Navigator.pop(context);
         Navigator.pushNamedAndRemoveUntil(
@@ -151,6 +153,28 @@ class _LoginState extends State<Login> {
         _autoValidate = true;
       });
     }
+  }
+
+   showLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            width: 300,
+            height: 100,
+            child: Center(
+                child: Row(
+              children: <Widget>[
+                LoadingSpinner(radius: 15.0, dotRadius: 5.0),
+                Text('Signing in'),
+              ],
+            )),
+          ),
+        );
+      },
+    );
   }
 
   lineDecoration() {

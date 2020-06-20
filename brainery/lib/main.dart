@@ -1,5 +1,4 @@
 import 'package:brainery/commons/constants.dart';
-import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/splash_screen/splash_screen.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     precacheImage(AssetImage(LOGO_IMAGE_PATH), context);
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: MaterialColor(0xff315192, colorSwatchMap), //Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: LandingTab.PATH,
+      initialRoute: SplashScreen.PATH,
       debugShowCheckedModeBanner: false,
     );
   }
