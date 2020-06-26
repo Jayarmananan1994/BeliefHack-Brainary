@@ -3,11 +3,11 @@ import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 class BraineryUserService {
   AuthService authService;
-  Firestore firestore;
+  CloudFunctions cloudFunctions;
   LessonAndCourseService lessonAndCourseService;
 
   Future<BraineryFavorites> getUserFavotires() async {
@@ -40,32 +40,41 @@ class BraineryUserService {
 
   updateFavoriteLesson() async {
     BraineryUser currentUser = await getCurrentUser();
-    _firestore()
-        .collection('users')
-        .document(currentUser.uid)
-        .updateData({'favoriteLessons': currentUser.favoriteLessons}).then(
+    // _firestore()
+    //     .collection('users')
+    //     .document(currentUser.uid)
+    //     .updateData({'favoriteLessons': currentUser.favoriteLessons}).then(
+    //         (value) => _authService().setCurrentUser(currentUser));
+     _cloudFunctions()
+        .getHttpsCallable(functionName: 'updateFavoriteLesson')
+        .call({'favoriteLessons': currentUser.favoriteLessons}).then(
             (value) => _authService().setCurrentUser(currentUser));
   }
-
 
   updateFavoriteCourse() async {
     BraineryUser currentUser = await getCurrentUser();
-    _firestore()
-        .collection('users')
-        .document(currentUser.uid)
-        .updateData({'favoriteCourse': currentUser.favoriteCourse}).then(
+    // _firestore()
+    //     .collection('users')
+    //     .document(currentUser.uid)
+    //     .updateData({'favoriteCourse': currentUser.favoriteCourse}).then(
+    //         (value) => _authService().setCurrentUser(currentUser));
+    _cloudFunctions()
+        .getHttpsCallable(functionName: 'updateFavoriteCourse')
+        .call({'favoriteCourse': currentUser.favoriteCourse}).then(
             (value) => _authService().setCurrentUser(currentUser));
   }
 
-  // removeFavoriteCourse(String course) async {
-  //   BraineryUser currentUser = await getCurrentUser();
-  //   currentUser.favoriteCourse.remove(course);
-  //   _firestore()
-  //       .collection('users')
-  //       .document(currentUser.uid)
-  //       .updateData({'favoriteCourse': currentUser.favoriteCourse}).then(
-  //           (value) => _authService().setCurrentUser(currentUser));
-  // }
+  postHelpMessageFromUser(String message) async{
+    BraineryUser currentUser = await getCurrentUser();
+    var postMessage = {
+      "message": message,
+      "date" : "21-07-2020",
+      "emailId": currentUser.emailId
+    };
+    return _cloudFunctions()
+        .getHttpsCallable(functionName: 'postHelpMessage')
+        .call(postMessage).then((value) =>  value.data);
+  }
 
   Future<BraineryUser> getCurrentUser() {
     return _authService().getCurrentSignedInUser();
@@ -83,9 +92,15 @@ class BraineryUserService {
     return lessonAndCourseService;
   }
 
-  Firestore _firestore() {
-    if (firestore != null) return firestore;
-    firestore = Firestore.instance;
-    return firestore;
+  CloudFunctions _cloudFunctions() {
+    if (cloudFunctions != null) return cloudFunctions;
+    cloudFunctions = CloudFunctions.instance;
+    return cloudFunctions;
   }
+
+  // Firestore _firestore() {
+  //   if (firestore != null) return firestore;
+  //   firestore = Firestore.instance;
+  //   return firestore;
+  // }
 }

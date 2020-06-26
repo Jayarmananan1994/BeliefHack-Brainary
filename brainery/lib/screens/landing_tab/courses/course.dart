@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:brainery/model/BraineryCourse.dart';
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/screens/landing_tab/lesson/shimmer_layout.dart';
+import 'package:brainery/screens/payment/payment.dart';
+import 'package:brainery/screens/payment/payment_success.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
@@ -129,9 +131,9 @@ class _CourseState extends State<Course> {
           Positioned(
             right: 30,
             child: IconButton(
-                icon:
-                    Icon(_favIcon(course.courseName), color: Colors.white, size: 40),
-                onPressed:  () => handleFav(course)),
+                icon: Icon(_favIcon(course.courseName),
+                    color: Colors.white, size: 40),
+                onPressed: () => handleFav(course)),
           )
         ],
       ),
@@ -156,9 +158,11 @@ class _CourseState extends State<Course> {
                         color: _themeColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 15)),
-                trailing:
-                    Icon(_favIcon(courses[index].courseName), color: _themeColor, size: 30),
-                onTap: () => handleFav(courses[index]),
+                trailing: IconButton(
+                    icon: Icon(_favIcon(courses[index].courseName),
+                        color: _themeColor, size: 30),
+                    onPressed: () => handleFav(courses[index])),
+                onTap: () => gotoPayment(),
               );
             }),
       ),
@@ -166,24 +170,22 @@ class _CourseState extends State<Course> {
   }
 
   IconData _favIcon(courseName) {
-      if(_favCourses.contains(courseName)){
-        return Icons.favorite;
-      }else{
-        return Icons.favorite_border;
-      } 
+    if (_favCourses.contains(courseName)) {
+      return Icons.favorite;
+    } else {
+      return Icons.favorite_border;
+    }
   }
 
-  void fetchFavCourses() async{
-     BraineryUser currentUser = await _authService.getCurrentSignedInUser();
-     print(currentUser.favoriteCourse);
-     setState(() {
-       _favCourses = currentUser.favoriteCourse;
-     });
+  void fetchFavCourses() async {
+    BraineryUser currentUser = await _authService.getCurrentSignedInUser();
+    print(currentUser.favoriteCourse);
+    setState(() {
+      _favCourses = currentUser.favoriteCourse;
+    });
   }
-
 
   handleFav(BraineryCourse course) {
-   
     if (_favCourses.contains(course.courseName)) {
       removeFromFavorite(course.courseName);
     } else {
@@ -192,11 +194,10 @@ class _CourseState extends State<Course> {
   }
 
   addToFavorite(String course) {
-     setState(() {
+    setState(() {
       _favCourses.add(course);
     });
     _braineryUserService.updateFavoriteCourse();
-   
   }
 
   removeFromFavorite(String course) {
@@ -204,6 +205,9 @@ class _CourseState extends State<Course> {
       _favCourses.remove(course);
     });
     _braineryUserService.updateFavoriteCourse();
-    
+  }
+
+  gotoPayment() {
+    Navigator.of(context).pushNamed(Payment.PATH);
   }
 }

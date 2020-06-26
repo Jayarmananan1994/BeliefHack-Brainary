@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class BraineryLesson {
   String title;
@@ -13,11 +13,13 @@ class BraineryLesson {
     map['title'] = title;
     map['videoUrl'] = videoUrl;
     map['access'] = access;
+    map['thumbnailImageUrl'] = thumbnailImageUrl;
+    map['length'] = length;
     return map;
   }
 
-   static fromFirestoreDcoument(DocumentSnapshot value) {
-    BraineryLesson user = new BraineryLesson(value['title'], value['videoUrl'], value['access'],value['thumbnailImageUrl'], value['length']);
-    return user;
-  }
+  //  static fromFirestoreDcoument(DocumentSnapshot value) {
+  //   BraineryLesson user = new BraineryLesson(value['title'], value['videoUrl'], value['access'],value['thumbnailImageUrl'], value['length']);
+  //   return user;
+  // }
 }

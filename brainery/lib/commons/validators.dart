@@ -2,6 +2,10 @@ String validateName(String value) {
   return (value.length < 3) ? 'Name must be more than 3 charater' : null;
 }
 
+String validateHelpMessage(String value) {
+  return (value.length ==0 ) ? 'The message cannot be empty' : null;
+}
+
 String validatePassword(String value) {
   return (value.length < 3) ? 'Password must have atleast 3 charater' : null;
 }

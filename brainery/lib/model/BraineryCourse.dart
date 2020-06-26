@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BraineryCourse {
   String courseName;
@@ -15,9 +14,9 @@ class BraineryCourse {
     return map;
   }
 
-  static fromFirestoreDcoument(DocumentSnapshot value) {
-    BraineryCourse user = BraineryCourse(
-        value['courseName'], value['previewImage'], value['courseId']);
-    return user;
-  }
+  // static fromFirestoreDcoument(DocumentSnapshot value) {
+  //   BraineryCourse user = BraineryCourse(
+  //       value['courseName'], value['previewImage'], value['courseId']);
+  //   return user;
+  // }
 }

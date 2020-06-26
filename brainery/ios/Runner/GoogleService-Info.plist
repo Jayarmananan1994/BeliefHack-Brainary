@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>570197924344-vnm05h95eb2j52g3bpqg2dev97ip8fa7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.570197924344-vnm05h95eb2j52g3bpqg2dev97ip8fa7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDgLmoiC1p7nNeiSskyryDU23NKVs3YPBk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>570197924344</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.beliefhack.brainery</string>
+	<key>PROJECT_ID</key>
+	<string>brainary-c9576</string>
+	<key>STORAGE_BUCKET</key>
+	<string>brainary-c9576.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:570197924344:ios:41cdff2ea398d94cf61e0d</string>
+	<key>DATABASE_URL</key>
+	<string>https://brainary-c9576.firebaseio.com</string>
+</dict>
+</plist>

@@ -67,6 +67,8 @@ class _LessonState extends State<Lesson> {
               ],
             );
           } else if (lessonsSnapshot.hasError) {
+
+            print(lessonsSnapshot.error.toString());
             return Center(child: Text('Error fetching data'));
           } else {
             return ShimmerLayout();

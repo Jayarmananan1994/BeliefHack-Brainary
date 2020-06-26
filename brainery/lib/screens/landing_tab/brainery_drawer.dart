@@ -1,10 +1,16 @@
+import 'package:brainery/screens/landing_tab/menus/profiles.dart';
 import 'package:brainery/screens/signup/signup.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class BraineryDrawer extends StatelessWidget {
-  final List<String> menus = ["Profile", "Account", "Reminder", "Subscription"];
+  final List<BraineryMenu> menus = [
+    BraineryMenu("Profile", Profile.PATH),
+    BraineryMenu("Account", Profile.PATH),
+    BraineryMenu("Reminder", Profile.PATH),
+    BraineryMenu("Subscriptions", Profile.PATH)
+  ];
   final AuthService _authService = locator<AuthService>();
 
   @override
@@ -43,18 +49,17 @@ class BraineryDrawer extends StatelessWidget {
     );
   }
 
-  Widget createMenu(String menu, context) {
+  Widget createMenu(BraineryMenu menu, context) {
     return ListTile(
-      title: Text(menu),
-      onTap: () {
-        _authService.signout().then((value) {
-          Navigator.pushNamed(context, SignUp.PATH);
-        })
-            //Navigator.pop(context);
-            ;
-      },
-    );
+      title: Text(menu.menuName),
+      onTap: () => Navigator.of(context).pushNamed(menu.actionWidget)
+      );
+            //Navigator.pop(context)
   }
+}
 
- 
+class BraineryMenu {
+  String menuName;
+  String actionWidget;
+  BraineryMenu(this.menuName, this.actionWidget);
 }

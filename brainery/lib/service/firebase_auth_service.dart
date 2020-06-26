@@ -1,14 +1,13 @@
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/service/auth_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FireBaseAuthService extends AuthService {
   BraineryUser _currentSignedInUser;
   FirebaseAuth _firebaseAuth;
-  Firestore _firestore;
-  SharedPreferences _sharedPreferences;
+  CloudFunctions _cloudFunctions;
 
   @override
   Future<BraineryUser> createNewUserWithEmail(
@@ -16,27 +15,30 @@ class FireBaseAuthService extends AuthService {
     AuthResult result = await getFirebaseAuth()
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    BraineryUser newUser = new BraineryUser(result.user.uid, name, email, [],[]);
-    await getFirestore()
-        .collection('users')
-        .document(newUser.uid)
-        .setData(newUser.toMap());
-    setCurrentUser(newUser);
+    BraineryUser newUser =
+        new BraineryUser(result.user.uid, name, email, [], []);
+    await getCloudFunctions()
+        .getHttpsCallable(functionName: 'createBraineryUser')
+        .call(newUser.toMap());
     return newUser;
   }
 
   @override
   Future<BraineryUser> getCurrentSignedInUser() async {
-    if(_currentSignedInUser==null){
+    if (_currentSignedInUser == null) {
+      print("if Service>>>>>>>>>>>>");
       var firebaseAuth = getFirebaseAuth();
       FirebaseUser firebaseUser = await firebaseAuth.currentUser();
-      if(firebaseUser==null){
-          return null;
+      if (firebaseUser == null) {
+        return null;
       }
-      DocumentSnapshot result= await getFirestore().collection('users').document(firebaseUser.uid).get();
-      _currentSignedInUser =  BraineryUser.fromFirestoreDcoument(result);
+      HttpsCallableResult result = await getCloudFunctions()
+          .getHttpsCallable(functionName: 'getBraineryUser')
+          .call();
+      _currentSignedInUser = BraineryUser.fromMap(result.data);
       return _currentSignedInUser;
-    }else{
+    } else {
+      print("Service>>>>>>>>>>>>");
       return _currentSignedInUser;
     }
   }
@@ -52,41 +54,26 @@ class FireBaseAuthService extends AuthService {
     return _firebaseAuth;
   }
 
-  Firestore getFirestore() {
-    if (_firestore == null) {
-      _firestore = Firestore.instance;
-    }
-    return _firestore;
-  }
-
-  SharedPreferences getSharedPreference() {
-    if (_sharedPreferences == null) {
-      SharedPreferences.getInstance()
-          .then((value) => _sharedPreferences = value);
-    }
-    return _sharedPreferences;
-  }
-
-  @override
-  Future<BraineryUser> autoSigninEmailUser(String uid) async {
-      DocumentReference doc =  getFirestore().collection('users').document(uid);
-      return doc.get().then((value){
-        return BraineryUser.fromFirestoreDcoument(value);
-      });
-  }
-
   @override
   Future<void> signout() {
     //getSharedPreference().remove('user');
     //getSharedPreference().remove('uuid');
-    _currentSignedInUser = null;  
+    _currentSignedInUser = null;
     return getFirebaseAuth().signOut();
   }
 
   Future<BraineryUser> signinWithEmail(String email, String password) async {
-    AuthResult result = await  getFirebaseAuth().signInWithEmailAndPassword(email: email, password: password);
-    FirebaseUser fireBaseUser = result.user;
-    DocumentSnapshot firebaseResult = await  getFirestore().collection('users').document(fireBaseUser.uid).get();
-    return  BraineryUser.fromFirestoreDcoument(firebaseResult);
+     HttpsCallableResult callResult = await getCloudFunctions()
+          .getHttpsCallable(functionName: 'getBraineryUser')
+          .call();
+    print(callResult.data);
+    return BraineryUser.fromMap(callResult.data);
+  }
+
+  CloudFunctions getCloudFunctions() {
+    if (_cloudFunctions == null) {
+      _cloudFunctions = CloudFunctions.instance;
+    }
+    return _cloudFunctions;
   }
 }

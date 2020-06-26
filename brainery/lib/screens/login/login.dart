@@ -205,6 +205,7 @@ class _LoginState extends State<Login> {
   }
 
   signupErrorHandler(error) {
+    Navigator.pop(context);
     if (error is PlatformException) {
       PlatformException pError = error;
       if ('ERROR_USER_NOT_FOUND' == pError.code ||
