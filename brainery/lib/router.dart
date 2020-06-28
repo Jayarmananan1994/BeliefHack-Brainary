@@ -8,6 +8,7 @@ import 'package:brainery/screens/payment/payment.dart';
 import 'package:brainery/screens/payment/payment_error.dart';
 import 'package:brainery/screens/payment/payment_success.dart';
 import 'package:brainery/screens/payment/paypal_payment.dart';
+import 'package:brainery/screens/payment/paypal_subscription.dart';
 import 'package:brainery/screens/signup/signup.dart';
 import 'package:brainery/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       var onFinish = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => PaypalPayment(onFinish: onFinish));
+    case PaypalSubscription.PATH:
+      var onFinish = settings.arguments;
+      return MaterialPageRoute(builder: (context) => PaypalSubscription(onFinish: onFinish));
     case Payment.PATH:
       return MaterialPageRoute(builder: (context) => Payment());
     case PaymentSucess.PATH:

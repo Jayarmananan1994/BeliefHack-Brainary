@@ -1,22 +1,25 @@
+import 'package:brainery/commons/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'package:http_auth/http_auth.dart';
 
 class PaypalServices {
-
   String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
 //  String domain = "https://api.paypal.com"; // for production mode
 
   // change clientId and secret with your own, provided by paypal
-  String clientId = 'AQB3F1i5hWCFMDx6I2xb6OeWdLcdYxucuiYl7JAYXhG-4ejFTybV-yYK2y_ect1vPRMNiVPiaBxCS-pb';
-  String secret = 'EJytTam81ru3LeBkLqnAaQM__ywgcmhoet4TPXK0Jh53PUxCMkE1cb6IVr4GiRSeVJsF9Qq8WjLw1GDk';
+  String clientId =
+      'AQB3F1i5hWCFMDx6I2xb6OeWdLcdYxucuiYl7JAYXhG-4ejFTybV-yYK2y_ect1vPRMNiVPiaBxCS-pb';
+  String secret =
+      'EJytTam81ru3LeBkLqnAaQM__ywgcmhoet4TPXK0Jh53PUxCMkE1cb6IVr4GiRSeVJsF9Qq8WjLw1GDk';
 
   // for getting the access token from Paypal
   Future<String> getAccessToken() async {
     try {
       var client = BasicAuthClient(clientId, secret);
-      var response = await client.post('$domain/v1/oauth2/token?grant_type=client_credentials');
+      var response = await client
+          .post('$domain/v1/oauth2/token?grant_type=client_credentials');
       if (response.statusCode == 200) {
         final body = convert.jsonDecode(response.body);
         return body["access_token"];
@@ -84,5 +87,43 @@ class PaypalServices {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<Map> createPayPalSubscription(
+      planId, name, emailId, autorenewal) async {
+    try {
+      var requestBody =
+          _createPaypalRequestBody(planId, name, emailId, autorenewal);
+      print(">>>>Request body" + requestBody.toString());
+      var response = await http.post(PAYPAL_SUBSCRIPTION_URL,
+          body: convert.jsonEncode(requestBody),
+          headers: {"content-type": "application/json"});
+      final Map body = convert.jsonDecode(response.body);
+      print(">>>>> response body" + body.toString());
+      if (body["status"] == "APPROVAL_PENDING") {
+        List links = body["links"];
+        print(links);
+        Map approveObj =
+            links.firstWhere((element) => element["rel"] == "approve");
+        return approveObj;
+      } else {
+        throw Exception("Error in payment");
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Map<String, dynamic> _createPaypalRequestBody(
+      planId, name, emailId, autorenewal) {
+    return {
+      "planId": planId,
+      "subscriber": {
+        "name": {"given_name": name},
+        "email_address": emailId
+      },
+      "autorenewal": autorenewal
+    };
   }
 }

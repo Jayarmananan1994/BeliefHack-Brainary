@@ -5,17 +5,19 @@ import 'package:brainery/commons/ui/loading_spinner.dart';
 import 'package:brainery/model/SquarePaymentResponse.dart';
 import 'package:brainery/screens/payment/payment_error.dart';
 import 'package:brainery/screens/payment/payment_success.dart';
-import 'package:brainery/screens/payment/paypal_payment.dart';
+import 'package:brainery/screens/payment/paypal_subscription.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:square_in_app_payments/in_app_payments.dart';
 import 'package:square_in_app_payments/models.dart' as httpModel;
-import 'package:http/http.dart' as http;
 
 class Payment extends StatelessWidget {
   static const String PATH = '/payment';
+  BuildContext _context;
   @override
   Widget build(BuildContext context) {
     //double _height = MediaQuery.of(context).size.height;
+    _context = context;
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),
@@ -28,7 +30,8 @@ class Payment extends StatelessWidget {
           children: <Widget>[
             Expanded(
                 child: Center(
-              child: Text('Content related to the subscription\n\twill come here'),
+              child:
+                  Text('Content related to the subscription\n\twill come here'),
             )),
             Expanded(
               child: Align(
@@ -51,7 +54,9 @@ class Payment extends StatelessWidget {
         child: RaisedButton(
             padding: EdgeInsets.all(0),
             textColor: Colors.white,
-            onPressed: () => Navigator.of(context).pushNamed(PaypalPayment.PATH, arguments: _paymentOnFinish), //_handlePayment(context),
+            onPressed: () => Navigator.of(context).pushNamed(
+                PaypalSubscription.PATH,
+                arguments: _paymentOnFinish), //_handlePayment(context),
             child: Container(
                 padding: const EdgeInsets.all(14.0),
                 decoration: BoxDecoration(
@@ -81,11 +86,12 @@ class Payment extends StatelessWidget {
         http.Response response = await http
             .post(SQUARE_PAY_SERVICE_URL, body: {'nonce': details.nonce});
         Map jsonResponse = jsonDecode(response.body);
-        var squarePaymentResponse = SquarePaymentResponse.fromJson(jsonResponse);
+        var squarePaymentResponse =
+            SquarePaymentResponse.fromJson(jsonResponse);
         Navigator.of(context).pop();
-        if(squarePaymentResponse.payment.status=='COMPLETED'){
+        if (squarePaymentResponse.payment.status == 'COMPLETED') {
           Navigator.of(context).pushNamed(PaymentSucess.PATH);
-        }else {
+        } else {
           Navigator.of(context).pushNamed(PaymentError.PATH);
         }
         // print(response.body.toString());
@@ -95,7 +101,7 @@ class Payment extends StatelessWidget {
     });
   }
 
-  showLoadingDialog(context){
+  showLoadingDialog(context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -108,7 +114,9 @@ class Payment extends StatelessWidget {
                 child: Row(
               children: <Widget>[
                 LoadingSpinner(radius: 15.0, dotRadius: 5.0),
-                Flexible(child: Text("Payment in progress.Please don't press back button.")),
+                Flexible(
+                    child: Text(
+                        "Payment in progress.Please don't press back button.")),
               ],
             )),
           ),
@@ -117,7 +125,12 @@ class Payment extends StatelessWidget {
     );
   }
 
-  _paymentOnFinish(id){
-    print('Payment done>>>>>'+id.toString());
+  _paymentOnFinish(paymentResponse) {
+    print('Payment done>>>>>' + paymentResponse.toString());
+    if(paymentResponse["subscription_id"]!=null){
+       Navigator.of(_context).pushNamed(PaymentSucess.PATH);
+    }else{
+       Navigator.of(_context).pushNamed(PaymentError.PATH);
+    }
   }
 }

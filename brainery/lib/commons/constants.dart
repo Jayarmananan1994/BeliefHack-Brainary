@@ -30,3 +30,4 @@ const DEFAULT_SERVICE_ERROR = 'We are not able to handle your request right now.
 const INVALID_CREDENTIAL = 'Incorrect emailId or password';
 const SQUARE_PAY_APPLICATION_ID = 'sandbox-sq0idb-NtWG2AYYf30z08rCydi4TQ';
 const SQUARE_PAY_SERVICE_URL = 'https://beliefhackbrainery-dev.herokuapp.com/chargeForCookie';
+const PAYPAL_SUBSCRIPTION_URL = 'https://beliefhackbrainery-dev.herokuapp.com/createPaypalSubscription';
