@@ -19,17 +19,7 @@ class BraineryUser {
     return map;
   }
 
-  // static fromFirestoreDcoument(DocumentSnapshot value) {
-  //   List<String> lessons = List<String>.from(value['favoriteLessons']);
-  //   List<String> courses = List<String>.from(value['favoriteCourse']);
-  //   BraineryUser user = BraineryUser(
-  //       value['uid'], value['name'], value['emailId'], lessons, courses);
-  //   return user;
-  // }
-
   static fromMap(Map value) {
-    print('>>>Value recieved:');
-    print(value);
     List<String> lessons = List<String>.from(value['favoriteLessons']);
     List<String> courses = List<String>.from(value['favoriteCourse']);
     BraineryUser user = BraineryUser(

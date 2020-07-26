@@ -5,6 +5,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 class LessonAndCourseService {
   List<BraineryLesson> _braineryLessons;
   List<BraineryCourse> _braineryCourse;
+  Map<String, List<BraineryLesson>> _courseContentMap = {};
 
   Future<List<BraineryLesson>> getBraineryLessons() async {
     if (_braineryLessons == null) {
@@ -15,7 +16,8 @@ class LessonAndCourseService {
       List documents = snapshot.data;
       _braineryLessons = documents
           .map((e) => BraineryLesson(e['title'], e['videoUrl'], e['access'],
-              e['thumbnailImageUrl'], e['length'])).toList();
+              e['thumbnailImageUrl'], e['length']))
+          .toList();
       return _braineryLessons;
     } else {
       return _braineryLessons;
@@ -24,16 +26,10 @@ class LessonAndCourseService {
 
   Future<List<BraineryCourse>> getBraineryCourseList() async {
     if (_braineryCourse == null) {
-      // var snapshot = await firestore
-      //     .collection('course_list')
-      //     .orderBy('courseName')
-      //     .getDocuments();
-      // var documents = snapshot.documents;
       CloudFunctions cloudFunctions = CloudFunctions.instance;
       var snapshot = await cloudFunctions
           .getHttpsCallable(functionName: 'getCourseList')
           .call();
-      print(snapshot.data);
       List documents = snapshot.data;
       _braineryCourse = documents
           .map((e) =>
@@ -43,5 +39,21 @@ class LessonAndCourseService {
     } else {
       return _braineryCourse;
     }
+  }
+
+  Future<List<BraineryLesson>> getCourseContent(courseId) async {
+    if (_courseContentMap[courseId] == null) {
+      CloudFunctions cloudFunctions = CloudFunctions.instance;
+      var param = {"courseName": 'course1'};
+      var snapshot = await cloudFunctions
+          .getHttpsCallable(functionName: 'getCourseContent')
+          .call(param);
+      List documents = snapshot.data;
+      _courseContentMap[courseId] = documents
+          .map((e) => BraineryLesson(e['title'], e['videoUrl'], e['access'],
+              e['previewImage'], e['length']))
+          .toList();
+    }
+    return _courseContentMap[courseId];
   }
 }

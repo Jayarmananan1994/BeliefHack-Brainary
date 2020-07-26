@@ -1,7 +1,5 @@
 import 'package:brainery/screens/landing_tab/menus/profiles.dart';
-import 'package:brainery/screens/signup/signup.dart';
-import 'package:brainery/service/auth_service.dart';
-import 'package:brainery/service_locator.dart';
+import 'package:brainery/screens/payment/payment.dart';
 import 'package:flutter/material.dart';
 
 class BraineryDrawer extends StatelessWidget {
@@ -9,9 +7,8 @@ class BraineryDrawer extends StatelessWidget {
     BraineryMenu("Profile", Profile.PATH),
     BraineryMenu("Account", Profile.PATH),
     BraineryMenu("Reminder", Profile.PATH),
-    BraineryMenu("Subscriptions", Profile.PATH)
+    BraineryMenu("Subscriptions", Payment.PATH)
   ];
-  final AuthService _authService = locator<AuthService>();
 
   @override
   Widget build(BuildContext context) {

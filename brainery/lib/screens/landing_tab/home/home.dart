@@ -1,5 +1,7 @@
 import 'package:brainery/commons/constants.dart';
 import 'package:brainery/commons/ui/brainery_video_player.dart';
+import 'package:brainery/commons/ui/no_internet.dart';
+import 'package:brainery/commons/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -12,11 +14,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool noInternet;
   final VideoPlayerController featuredVideoController =
       VideoPlayerController.network(INTRO_VIDEO_URL);
+
+  @override
+  void initState() {
+    super.initState();
+    _checkInternet();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return (noInternet!=null && noInternet) ?  NoInternet(retry: internetReturn) : Container(
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -27,6 +37,7 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+    //eturn NoInternet(retry: ,);
   }
 
   _sessionPanel() {
@@ -68,8 +79,8 @@ class _HomeState extends State<Home> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                      child: BraineryVideoPlayer(
+            borderRadius: BorderRadius.circular(20),
+            child: BraineryVideoPlayer(
                 controller: featuredVideoController,
                 imageProvider: NetworkImage(INTRO_VIDEO_THUMBNAIL)),
           ),
@@ -133,5 +144,21 @@ class _HomeState extends State<Home> {
   void dispose() {
     featuredVideoController.dispose();
     super.dispose();
+  }
+
+  void _checkInternet() async {
+    bool isConnected = await isConnectedToIntetnet();
+    if(isConnected){
+      print('Connected');
+    }else{
+       setState(() {
+         noInternet = true;
+       });
+    }
+  }
+  internetReturn(){
+    setState(() {
+      noInternet = false;
+    });
   }
 }

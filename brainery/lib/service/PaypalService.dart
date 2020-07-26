@@ -94,15 +94,12 @@ class PaypalServices {
     try {
       var requestBody =
           _createPaypalRequestBody(planId, name, emailId, autorenewal);
-      print(">>>>Request body" + requestBody.toString());
       var response = await http.post(PAYPAL_SUBSCRIPTION_URL,
           body: convert.jsonEncode(requestBody),
           headers: {"content-type": "application/json"});
       final Map body = convert.jsonDecode(response.body);
-      print(">>>>> response body" + body.toString());
       if (body["status"] == "APPROVAL_PENDING") {
         List links = body["links"];
-        print(links);
         Map approveObj =
             links.firstWhere((element) => element["rel"] == "approve");
         return approveObj;

@@ -1,15 +1,19 @@
 import 'package:brainery/commons/constants.dart';
+import 'package:brainery/model/BrainerySubscriptionInfo.dart';
 import 'package:brainery/screens/apptour/tour_page.dart';
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:brainery/service/auth_service.dart';
+import 'package:brainery/service/brainery_user_service.dart';
+import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String PATH = '/splashscreen';
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final BraineryUserService _braineryUserService = locator<BraineryUserService>();
+  final AuthService _authService = locator<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +38,14 @@ class SplashScreen extends StatelessWidget {
             arguments: _controller);
       });
     } else {
-      _firebaseAuth.currentUser().then((value) {
+      _authService.getCurrentSignedInUser().then((value) async {
         String path = (value == null) ? Login.PATH : LandingTab.PATH;
+        BrainerySubscriptionInfo _subscriptionInfo = await _braineryUserService.fetchSubscriptionInfo();
+        print('>>>>>>>Info:'+_subscriptionInfo?.toMap().toString());  
         Navigator.pop(context);
         Navigator.pushNamedAndRemoveUntil(context, path, (r) => false);
       }).catchError((e) {
+        print(e);
         Navigator.pop(context);
         Navigator.pushNamedAndRemoveUntil(context, Login.PATH, (r) => false);
       });

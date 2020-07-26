@@ -1,4 +1,6 @@
+import 'package:brainery/model/BraineryCourse.dart';
 import 'package:brainery/screens/apptour/tour_page.dart';
+import 'package:brainery/screens/course_list/course_list.dart';
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/landing_tab/menus/about_leon.dart';
 import 'package:brainery/screens/landing_tab/menus/help.dart';
@@ -30,8 +32,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => PaypalPayment(onFinish: onFinish));
     case PaypalSubscription.PATH:
-      var onFinish = settings.arguments;
-      return MaterialPageRoute(builder: (context) => PaypalSubscription(onFinish: onFinish));
+      Map arg = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => PaypalSubscription(
+              onFinish: arg['onFinish'], planId: arg['planId']));
+    case CourseList.PATH:
+      BraineryCourse course = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => CourseList(braineryCourse: course));
     case Payment.PATH:
       return MaterialPageRoute(builder: (context) => Payment());
     case PaymentSucess.PATH:

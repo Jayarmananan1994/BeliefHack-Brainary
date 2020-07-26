@@ -44,8 +44,6 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
-    print('>>>>>height of lessons video player' +
-        MediaQuery.of(context).padding.top.toString());
     return Container(
       margin: MediaQuery.of(context).padding,
       height: _height,

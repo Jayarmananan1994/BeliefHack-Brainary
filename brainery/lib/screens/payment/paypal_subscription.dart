@@ -1,3 +1,4 @@
+import 'package:brainery/commons/ui/brainery_alert_dialog.dart';
 import 'package:brainery/service/PaypalService.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -5,8 +6,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 class PaypalSubscription extends StatefulWidget {
   static const String PATH = '/paypal-subscription';
   final Function onFinish;
+  final String planId;
 
-  PaypalSubscription({this.onFinish});
+  PaypalSubscription({this.onFinish, this.planId});
 
   @override
   _PaypalSubscriptionState createState() => _PaypalSubscriptionState();
@@ -23,15 +25,14 @@ class _PaypalSubscriptionState extends State<PaypalSubscription> {
     Future.delayed(Duration.zero, () async {
       try {
         Map approveObj = await services.createPayPalSubscription(
-            "P-72154846EA606791TL33WRWY", "Mani", "mani@gmail.com", true);
+            widget.planId, "Mani", "mani@gmail.com", true);
         if (approveObj != null) {
-          print(">>>>Approve Obj " + approveObj.toString());
           setState(() {
             approveUrl = approveObj["href"];
           });
         }
       } catch (e) {
-        print('exception: ' + e.toString());
+        closeWindowWithWaring();
       }
     });
   }
@@ -46,7 +47,10 @@ class _PaypalSubscriptionState extends State<PaypalSubscription> {
             onTap: () => Navigator.pop(context),
           )),
       body: (approveUrl == null)
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Column( children: <Widget>[
+            Text('Please wait, we are redirecting you to the paypal payment.'),
+            CircularProgressIndicator()
+          ],) )
           : paymentWebView(),
     );
   }
@@ -59,17 +63,22 @@ class _PaypalSubscriptionState extends State<PaypalSubscription> {
       navigationDelegate: (NavigationRequest request) {
         if (request.url.contains(returnURL)) {
           final uri = Uri.parse(request.url);
-          print('Payment done');
-          print(uri.queryParameters);
           Navigator.of(context).pop();
-          widget.onFinish(uri.queryParameters);
-         // Navigator.of(context).pop();
+          widget.onFinish(uri.queryParameters, widget.planId);
         } else if (request.url.contains(cancelURL)) {
-          print('Payment canceled>>>>>>>>>>');
           Navigator.of(context).pop();
         }
         return NavigationDecision.navigate;
       },
     );
+  }
+
+  void closeWindowWithWaring() async{
+    await BraineryAlertDialog(
+            title: 'Oops!',
+            content:
+                'We could not complete the payment. Please try again later.',
+            confirmText: 'Ok').show(context);
+    Navigator.of(context).pop();
   }
 }

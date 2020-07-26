@@ -67,8 +67,6 @@ class _LessonState extends State<Lesson> {
               ],
             );
           } else if (lessonsSnapshot.hasError) {
-
-            print(lessonsSnapshot.error.toString());
             return Center(child: Text('Error fetching data'));
           } else {
             return ShimmerLayout();
@@ -119,16 +117,16 @@ class _LessonState extends State<Lesson> {
         children: <Widget>[
           Positioned.fill(
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(25),
                 child: Image.network(lesson.thumbnailImageUrl,
                     width: _width, fit: BoxFit.fitHeight)),
           ),
-          Center(
-            child: IconButton(
-                icon: Icon(Icons.play_circle_outline, size: 50),
-                onPressed: () {},
-                color: Colors.white),
-          ),
+          // Center(
+          //   child: IconButton(
+          //       icon: Icon(Icons.play_circle_outline, size: 50),
+          //       onPressed: () {},
+          //       color: Colors.white),
+          // ),
           Positioned(
             bottom: 30,
             left: 30,

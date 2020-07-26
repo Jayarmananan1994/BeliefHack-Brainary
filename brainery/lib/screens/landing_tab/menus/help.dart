@@ -81,10 +81,7 @@ class _HelpState extends State<Help> {
   _sendHelpMessage() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      //showLoadingDialog();
       _userService.postHelpMessageFromUser(helpMessage).then((value) {
-        print("Value");
-        print(value);
         showDialog(
             context: context,
             child: BraineryAlertDialog(

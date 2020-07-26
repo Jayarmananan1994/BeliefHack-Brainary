@@ -9,9 +9,7 @@ class PaymentError extends StatelessWidget {
     double _width = MediaQuery.of(context).size.width;
     Color _themeColor = Theme.of(context).primaryColor;
 
-    return Scaffold(
-      appBar: AppBar(title: Text('PAYMENT FAILED')),
-      body: Container(
+    return Container(
         width: _width,
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -40,7 +38,6 @@ class PaymentError extends StatelessWidget {
                 color: _themeColor)
           ],
         )
-      ),
     );
   }
 }

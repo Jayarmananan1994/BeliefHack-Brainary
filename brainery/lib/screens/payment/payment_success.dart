@@ -7,11 +7,7 @@ class PaymentSucess extends StatelessWidget {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     Color _themeColor = Theme.of(context).primaryColor;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Payment Done'),
-      ),
-      body: Container(
+    return Container(
         width: _width,
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -32,10 +28,14 @@ class PaymentSucess extends StatelessWidget {
                 shape: StadiumBorder(),
                 onPressed: () => Navigator.of(context).pushNamed(LandingTab.PATH),
                 child: Text('Home', style: TextStyle(color: Colors.white)),
-                color: _themeColor)
+                color: _themeColor),
+            RaisedButton(
+                shape: StadiumBorder(),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Home', style: TextStyle(color: _themeColor)),
+                color: Colors.white)
           ],
         ),
-      ),
     );
   }
 }

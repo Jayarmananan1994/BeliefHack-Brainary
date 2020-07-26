@@ -1,15 +1,17 @@
 import 'dart:math';
 
 import 'package:brainery/model/BraineryCourse.dart';
+import 'package:brainery/model/BrainerySubscriptionInfo.dart';
 import 'package:brainery/model/BraineryUser.dart';
+import 'package:brainery/screens/course_list/course_list.dart';
 import 'package:brainery/screens/landing_tab/lesson/shimmer_layout.dart';
 import 'package:brainery/screens/payment/payment.dart';
-import 'package:brainery/screens/payment/payment_success.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Course extends StatefulWidget {
   @override
@@ -26,9 +28,11 @@ class _CourseState extends State<Course> {
   AuthService _authService = locator<AuthService>();
   BraineryUserService _braineryUserService = locator<BraineryUserService>();
   List<String> _favCourses = [];
+  BrainerySubscriptionInfo _subscriptionInfo;
 
   @override
   void initState() {
+    fetchSubscriptionInfo();
     fetchFavCourses();
     _pageController = PageController(viewportFraction: viewPortFraction)
       ..addListener(() {
@@ -99,7 +103,7 @@ class _CourseState extends State<Course> {
   Widget generateVideoPreview(double scale, BraineryCourse course) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(20),
           color: Colors.black,
           boxShadow: [
             BoxShadow(color: Colors.grey, blurRadius: 5, spreadRadius: 2
@@ -107,7 +111,7 @@ class _CourseState extends State<Course> {
                 )
           ]),
       margin: EdgeInsets.only(
-        right: 15,
+        right: 35,
         top: 50 - scale * 25,
         bottom: 50 - scale * 25,
       ),
@@ -115,7 +119,7 @@ class _CourseState extends State<Course> {
         children: <Widget>[
           Positioned.fill(
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(25),
                 child: Image.network(course.previewImage,
                     width: _width, fit: BoxFit.fitHeight)),
           ),
@@ -152,7 +156,8 @@ class _CourseState extends State<Course> {
                 Divider(thickness: 1, indent: 15, endIndent: 15),
             itemBuilder: (context, index) {
               return ListTile(
-                leading: Image.network(courses[index].previewImage),
+                leading: _imageBox(courses[index]
+                    .previewImage),
                 title: Text(courses[index].courseName,
                     style: TextStyle(
                         color: _themeColor,
@@ -162,9 +167,26 @@ class _CourseState extends State<Course> {
                     icon: Icon(_favIcon(courses[index].courseName),
                         color: _themeColor, size: 30),
                     onPressed: () => handleFav(courses[index])),
-                onTap: () => gotoPayment(),
+                onTap: () => ( _subscriptionInfo!=null && _subscriptionInfo.isSubscptionValid) ? gotoCoursePage(courses[index]) : gotoPayment(),
               );
             }),
+      ),
+    );
+  }
+
+  _imageBox(url) {
+    return Container(
+      width: 100.0,
+      child: Stack(
+        children: <Widget>[
+          FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage, image: url, width: 100.0),
+          ( _subscriptionInfo !=null && _subscriptionInfo.isSubscptionValid)
+              ? Container()
+              : Align(
+                  child: Icon(Icons.lock, size: 35, color: Colors.white),
+                  alignment: Alignment.center)
+        ],
       ),
     );
   }
@@ -209,5 +231,16 @@ class _CourseState extends State<Course> {
 
   gotoPayment() {
     Navigator.of(context).pushNamed(Payment.PATH);
+  }
+
+  gotoCoursePage(course){
+     Navigator.of(context).pushNamed(CourseList.PATH,arguments: course );
+  }
+
+  void fetchSubscriptionInfo() async {
+    var value = await _braineryUserService.fetchSubscriptionInfo();
+    setState(() {
+      _subscriptionInfo = value;
+    });
   }
 }

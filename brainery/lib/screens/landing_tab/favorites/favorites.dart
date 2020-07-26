@@ -24,15 +24,23 @@ class _FavoritesState extends State<Favorites> {
           var favorites = snapshot.data;
           var lessons = favorites.braineryLessonFav;
           var courses = favorites.braineryCourseFav;
-          return (lessons.length==0 && courses.length==0) ? NoFavorites(): Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _title('LESSONS'),
-              Expanded(child: _generateLessonFavList(lessons)),
-               _title('COURSES'),
-              Expanded(child: _generateCourseFavList(courses))
-            ],
-          );
+          return (lessons.length == 0 && courses.length == 0)
+              ? NoFavorites()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _title('LESSONS'),
+                    (lessons.length > 0)
+                        ? Expanded(child: _generateLessonFavList(lessons))
+                        : Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text('You have no favorite Lessons')),
+                    _title('COURSES'),
+                   (courses.length>0) ? Expanded(child: _generateCourseFavList(courses)) : Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text('You have no favorite Courses'))
+                  ],
+                );
         } else if (snapshot.hasError) {
           return Text('Error fetching data');
         } else {

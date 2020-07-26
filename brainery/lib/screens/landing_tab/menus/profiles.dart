@@ -2,6 +2,7 @@ import 'package:brainery/commons/constants.dart';
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/screens/landing_tab/menus/about_leon.dart';
 import 'package:brainery/screens/landing_tab/menus/help.dart';
+import 'package:brainery/screens/login/login.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +11,22 @@ class Profile extends StatelessWidget {
   static const String PATH = '/profile';
   static TextStyle _primaryTextStyle;
   static List<ProfileOptions> moreOptions = [
+    ProfileOptions('More', 'title'),
     ProfileOptions('About', ''),
     ProfileOptions('About Leon Morton', AboutLeon.PATH),
     ProfileOptions('Terms', ''),
     ProfileOptions('Privacy', ''),
-    ProfileOptions('Help', Help.PATH)
+    ProfileOptions('Help', Help.PATH),
+    ProfileOptions('SETTINGS', 'title'),
+    ProfileOptions('Notifications', ''),
+    ProfileOptions('Subscription', ''),
+    ProfileOptions('Sign out', 'logout')
   ];
 
   static List settingsOptions = [
     ProfileOptions('Notifications', ''),
-    ProfileOptions('Subscriptions', '')
+    ProfileOptions('Subscription', ''),
+    ProfileOptions('Sign out', 'logout')
   ];
 
   final AuthService _authService = locator<AuthService>();
@@ -34,7 +41,6 @@ class Profile extends StatelessWidget {
         title: Text('PROFILE'),
       ),
       body: Container(
-        //padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -42,8 +48,7 @@ class Profile extends StatelessWidget {
             _pageTitle(),
             _profileInfo(),
             SizedBox(height: 20),
-            _moreMenus(),
-            _settingsOptions()
+            Flexible(child: _moreMenus())
           ],
         ),
       ),
@@ -75,7 +80,6 @@ class Profile extends StatelessWidget {
           List<Widget> widgets;
           if (snapshot.hasData) {
             var data = snapshot.data;
-            print(data.toMap());
             widgets = [
               Text(data.name, style: _primaryTextStyle),
               Text(data.emailId)
@@ -117,48 +121,35 @@ class Profile extends StatelessWidget {
   }
 
   _moreMenus() {
-    return Expanded(
-      child: ListView.separated(
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return ListTile(
-                  title: Text('MORE', style: _primaryTextStyle), dense: true);
-            } else {
-              return ListTile(
-                  dense: true,
-                  title: Text(moreOptions[index - 1].optionName,
-                      style: _primaryTextStyle),
-                  trailing: Icon(Icons.arrow_forward_ios), onTap: (){
-                    Navigator.of(context).pushNamed(moreOptions[index-1].actionPath);
-                  });
-            }
-          },
-          separatorBuilder: (context, index) =>
-              Divider(thickness: 1, indent: 15, endIndent: 15),
-          itemCount: moreOptions.length + 1),
-    );
+    return ListView.separated(
+        itemBuilder: (context, index) {
+          var option = moreOptions[index];
+          if (option.actionPath == 'title') {
+            return ListTile(
+                title: Text(option.optionName, style: _primaryTextStyle),
+                dense: true);
+          } else {
+            return ListTile(
+                dense: true,
+                title: Text(option.optionName, style: _primaryTextStyle),
+                trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () => menuAction(option, context));
+          }
+        },
+        separatorBuilder: (context, index) =>
+            Divider(thickness: 1, indent: 15, endIndent: 15),
+        itemCount: moreOptions.length);
   }
 
-  _settingsOptions() {
-    return Expanded(
-      child: ListView.separated(
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return ListTile(
-                  title: Text('SETTINGS', style: _primaryTextStyle),
-                  dense: true);
-            } else {
-              return ListTile(
-                  dense: true,
-                  title: Text(settingsOptions[index - 1].optionName,
-                      style: _primaryTextStyle),
-                  trailing: Icon(Icons.arrow_forward_ios));
-            }
-          },
-          separatorBuilder: (context, index) =>
-              Divider(thickness: 1, indent: 15, endIndent: 15),
-          itemCount: settingsOptions.length + 1),
-    );
+  menuAction(ProfileOptions option, context) {
+    if (option.actionPath == 'logout') {
+      _authService.signout();
+      Navigator.pushNamedAndRemoveUntil(context, Login.PATH, (r) => false);
+    }else if(option.actionPath==''){
+      // Ignore the action
+    } else {
+       Navigator.of(context).pushNamed(option.actionPath);
+    }
   }
 }
 

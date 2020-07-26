@@ -89,7 +89,7 @@ class SlidePageTwo extends StatelessWidget {
         Container(
             child: Text(number,
                 style: TextStyle(color: Colors.blue, fontSize: 45)),
-            padding: EdgeInsets.symmetric(horizontal: 45)),
+            padding: EdgeInsets.symmetric(horizontal: 20)),
         instruction
       ],
     );
