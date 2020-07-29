@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebseConfig: {
+  firebaseConfig: {
     apiKey: "AIzaSyDyXvHNmDaVG6SIuNOJmhZl0GhGRTD5iNU",
     authDomain: "brainary-c9576.firebaseapp.com",
     databaseURL: "https://brainary-c9576.firebaseio.com",
