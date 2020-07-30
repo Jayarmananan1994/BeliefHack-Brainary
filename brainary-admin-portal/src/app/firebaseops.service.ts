@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFireAuth } from "@angular/fire/auth"
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Lesson } from './models/lessons.model';
 import { Course } from './models/course.model';
+import { BrainaryUser } from './models/brainary-user.model';
+import { User, auth } from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseopsService {
 
-  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage) { }
+  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage,private afAuth: AngularFireAuth) { }
 
 
   getBraineryCourse(): AngularFirestoreCollection<Course> {
@@ -43,6 +46,23 @@ export class FirebaseopsService {
     return this.firestore.collection<Lesson>('lessons').doc(docId).delete();
   }
 
+  signInWithEmail(email, password) {
+
+   //return this.afAuth.setPersistence( auth.Auth.Persistence.LOCAL).then(()=>{
+        return this.afAuth.signInWithEmailAndPassword(email, password);
+    //}).catch((err)=>{
+    //  console.log(err);
+    //})
+
+  }
+
+  getSigninUser(){
+    return this.afAuth.currentUser;
+  }
+
+  getAllUsers(): AngularFirestoreCollection<BrainaryUser> {
+    return this.firestore.collection<BrainaryUser>('users');
+  }
 
   private getDownloadUrl$(
     uploadTask: AngularFireUploadTask,

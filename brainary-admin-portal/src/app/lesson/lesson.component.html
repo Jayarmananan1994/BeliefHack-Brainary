@@ -59,21 +59,6 @@
         {{progressMessage}}
     </div>
   </form>
-  <!-- <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Select a video file for upload:(Formats accepted: .mkv, .mp4, .mov)</h5>
-        <input type="file" (change)="upload($event)" accept=".mkv,.mp4,.mov" />
-      </div>
-    </div>
-  </div> -->
-
-
-  <!-- <div class="progress">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-      [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0"
-      aria-valuemax="100"></div>
-  </div> -->
   <div class="field" style="padding-top: 15px;">
     <progress class="progress is-success" [value]="currentUploadProgress" max="100"></progress>
   </div>
@@ -93,17 +78,13 @@
           <div class="media-content">
             <p class="title is-6">{{lesson.title}}</p>
             <p class="subtitle is-6">Duration: {{lesson.length}}</p>
-            <div class="field is-grouped">
-              <p class="control">
-                <button class="button is-link">
-                  View Lesson
+            <div class="buttons">
+                <button class="button is-small is-link">
+                  View
                 </button>
-              </p>
-              <p class="control">
-                <button class="button is-danger" (click)="deletePost()">
-                  Delete Lesson
+                <button class="button is-small is-danger" (click)="deletePost()">
+                  Delete
                 </button>
-              </p>
             </div>
           </div>
         </div>
@@ -113,3 +94,12 @@
     <br />
   </div>
 </section>
+
+<div class="overlay" *ngIf="isLoading" >
+  <div class="center">
+      <mat-progress-spinner diameter=50
+                          mode="indeterminate"
+                color="accent">
+    </mat-progress-spinner>
+  </div>
+  </div>

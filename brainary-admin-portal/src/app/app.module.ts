@@ -27,6 +27,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ConfirmDialog } from './dialog/ConfirmDialog';
 import { LessonComponent } from './lesson/lesson.component';
+import { LoginComponent } from './login/login.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { LessonComponent } from './lesson/lesson.component';
     ScrollableDirective,
     GeneralDialog,
     ConfirmDialog,
-    LessonComponent
+    LessonComponent,
+    LoginComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,8 @@ import { LessonComponent } from './lesson/lesson.component';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent }
+      { path: '', component: HomeComponent },
+      { path: 'login', component: LoginComponent}
     ]),
     BrowserAnimationsModule,
     InfiniteScrollModule

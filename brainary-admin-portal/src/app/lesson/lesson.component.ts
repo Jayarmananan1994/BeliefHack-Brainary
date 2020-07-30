@@ -5,6 +5,7 @@ import { Lesson } from '../models/lessons.model';
 import { Observable, EMPTY, Subject } from "rxjs";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 //import { AngularFireUploadTask } from 'angularfire2/storage';
 
 @Component({
@@ -21,11 +22,19 @@ export class LessonComponent implements OnInit {
   thumbnailImage: File;
   currentUploadProgress = 0;
   progressMessage = '';
+  isLoading = false;
   //task: AngularFireUploadTask;
 
-  constructor(private firebaseOps: FirebaseopsService, private readonly snackBar: MatSnackBar, private dialog: MatDialog) { }
+  constructor(private firebaseOps: FirebaseopsService, private readonly snackBar: MatSnackBar, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
+    // this.firebaseOps.getSigninUser().then(val=>{
+    //     //console.log(val.uid);
+    //     if(val==null){
+    //       this.router.navigateByUrl('login');
+    //     }
+
+    // });
     this.firebaseOps.getBraineryLessons().snapshotChanges().pipe(
       map(actions => {
         return actions.map(this.documentToLessons);

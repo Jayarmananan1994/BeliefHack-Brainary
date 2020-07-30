@@ -14,13 +14,20 @@ import { GeneralDialog } from '../dialog/general-dialog';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() {
+  constructor(private router: Router, private firebaseOps: FirebaseopsService) {
 
   }
 
   ngOnInit(): void {
+    //let uid = sessionStorage.getItem('uid');
+    //if (uid == null) {
+      this.firebaseOps.getSigninUser().then(val => {
+        if (val == null) {
+          this.router.navigateByUrl('login');
+        }
+      });
+    }
 
-  }
 
 
 }

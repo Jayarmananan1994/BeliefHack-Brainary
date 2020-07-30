@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FirebaseopsService } from './firebaseops.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'adminapp';
+
+  constructor() { }
+
+
+  ngOnInit(): void {
+  }
 }
