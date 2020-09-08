@@ -56,4 +56,10 @@ class LessonAndCourseService {
     }
     return _courseContentMap[courseId];
   }
+
+  clearLessonCache(){
+    _courseContentMap = {};
+    _braineryCourse = [];
+    _braineryLessons = [];
+  }
 }

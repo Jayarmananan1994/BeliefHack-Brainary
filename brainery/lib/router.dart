@@ -3,8 +3,13 @@ import 'package:brainery/screens/apptour/tour_page.dart';
 import 'package:brainery/screens/course_list/course_list.dart';
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:brainery/screens/landing_tab/menus/about_leon.dart';
+import 'package:brainery/screens/landing_tab/menus/faq.dart';
 import 'package:brainery/screens/landing_tab/menus/help.dart';
+import 'package:brainery/screens/landing_tab/menus/privacy.dart';
 import 'package:brainery/screens/landing_tab/menus/profiles.dart';
+import 'package:brainery/screens/landing_tab/menus/subscription_info.dart';
+import 'package:brainery/screens/landing_tab/menus/terms.dart';
+import 'package:brainery/screens/landing_tab/timer/timer_start.dart';
 import 'package:brainery/screens/login/login.dart';
 import 'package:brainery/screens/payment/payment.dart';
 import 'package:brainery/screens/payment/payment_error.dart';
@@ -52,6 +57,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => AboutLeon());
     case Help.PATH:
       return MaterialPageRoute(builder: (context) => Help());
+    case Faq.PATH:
+      return MaterialPageRoute(builder: (context) => Faq());
+    case Terms.PATH:
+      return MaterialPageRoute(builder: (context) => Terms());
+    case Privacy.PATH:
+      return MaterialPageRoute(builder: (context) => Privacy());
+    case SubscriptionInfo.PATH:
+      return MaterialPageRoute(builder: (context) => SubscriptionInfo());
+    case TimerStart.PATH:
+      Map arg = settings.arguments;
+      return MaterialPageRoute(builder: (context) => TimerStart(totalSeconds: arg['totalSeconds'], interval: arg['interval'],));
     case TourPage.PATH:
       var controller = settings.arguments;
       return MaterialPageRoute(

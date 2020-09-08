@@ -1,3 +1,4 @@
+import 'package:brainery/service/PaypalService.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service/firebase_auth_service.dart';
@@ -9,4 +10,5 @@ void setupLocator() {
   locator.registerSingleton<AuthService>(FireBaseAuthService());
   locator.registerSingleton<LessonAndCourseService>(LessonAndCourseService());
   locator.registerSingleton<BraineryUserService>(BraineryUserService());
+  locator.registerSingleton<PaypalServices>(PaypalServices());
 }

@@ -1,9 +1,15 @@
 import 'package:brainery/commons/constants.dart';
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/screens/landing_tab/menus/about_leon.dart';
+import 'package:brainery/screens/landing_tab/menus/faq.dart';
 import 'package:brainery/screens/landing_tab/menus/help.dart';
+import 'package:brainery/screens/landing_tab/menus/privacy.dart';
+import 'package:brainery/screens/landing_tab/menus/subscription_info.dart';
+import 'package:brainery/screens/landing_tab/menus/terms.dart';
 import 'package:brainery/screens/login/login.dart';
 import 'package:brainery/service/auth_service.dart';
+import 'package:brainery/service/brainery_user_service.dart';
+import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -14,22 +20,19 @@ class Profile extends StatelessWidget {
     ProfileOptions('More', 'title'),
     ProfileOptions('About', ''),
     ProfileOptions('About Leon Morton', AboutLeon.PATH),
-    ProfileOptions('Terms', ''),
-    ProfileOptions('Privacy', ''),
+    ProfileOptions('Terms', Terms.PATH),
+    ProfileOptions('Faq', Faq.PATH),
+    ProfileOptions('Privacy', Privacy.PATH),
     ProfileOptions('Help', Help.PATH),
     ProfileOptions('SETTINGS', 'title'),
     ProfileOptions('Notifications', ''),
-    ProfileOptions('Subscription', ''),
-    ProfileOptions('Sign out', 'logout')
-  ];
-
-  static List settingsOptions = [
-    ProfileOptions('Notifications', ''),
-    ProfileOptions('Subscription', ''),
+    ProfileOptions('Subscription', SubscriptionInfo.PATH),
     ProfileOptions('Sign out', 'logout')
   ];
 
   final AuthService _authService = locator<AuthService>();
+  final BraineryUserService _userService = locator<BraineryUserService>();
+  final LessonAndCourseService _lessonAndCourseService = locator<LessonAndCourseService>();
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +147,8 @@ class Profile extends StatelessWidget {
   menuAction(ProfileOptions option, context) {
     if (option.actionPath == 'logout') {
       _authService.signout();
+      _lessonAndCourseService.clearLessonCache();
+      _userService.clearUserCacheInfo();
       Navigator.pushNamedAndRemoveUntil(context, Login.PATH, (r) => false);
     }else if(option.actionPath==''){
       // Ignore the action

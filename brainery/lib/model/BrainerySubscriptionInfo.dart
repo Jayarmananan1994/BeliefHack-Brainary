@@ -1,36 +1,77 @@
 class BrainerySubscriptionInfo {
-  String planId;
+  String subscriptionId;
+  String status;
   DateTime startDate;
-  String subcriptionId;
+  String planId;
+  String planName;
+  String planDescription;
+  DateTime statusUptatedOn;
+  DateTime nextBillingTime;
   String uid;
-  bool isSubscptionValid;
+  bool access;
 
-  BrainerySubscriptionInfo(this.planId, this.startDate, this.subcriptionId,
-      this.uid, this.isSubscptionValid);
+  BrainerySubscriptionInfo(
+      this.subscriptionId,
+      this.status,
+      this.startDate,
+      this.planId,
+      this.planName,
+      this.planDescription,
+      this.statusUptatedOn,
+      this.nextBillingTime,
+      this.uid,
+      this.access);
 
   static BrainerySubscriptionInfo fromDocumentSnapshot(Map data, uid) {
     try {
-      DateTime startTime = DateTime.parse(data['startDate']);
-      bool isSubscValid = true;
+      String subsId = data['subscriptionId'];
+      String status = data['status'];
+      DateTime startTime = (data['createdTime'] != null)
+          ? DateTime.parse(data['createdTime'])
+          : null;
+      String planId = data['planId'];
+      String planName = data['planName'];
+      String planDescription = data['planDescription'];
+      DateTime statusUptatedOn = (data['statusUpdateOn'] != null)
+          ? DateTime.parse(data['statusUpdateOn'])
+          : null;
+      DateTime nextBillingTime =
+          (data['nextBillingTime'] != null) ? DateTime.parse(data['nextBillingTime']) : null;
+      bool isSubscValid = data['access'];
       return BrainerySubscriptionInfo(
-          data['planId'], startTime, data['subcriptionId'], uid, isSubscValid);
+          subsId,
+          status,
+          startTime,
+          planId,
+          planName,
+          planDescription,
+          statusUptatedOn,
+          nextBillingTime,
+          uid,
+          isSubscValid);
     } catch (e) {
       print(e);
-          return BrainerySubscriptionInfo(
-          data['planId'], null, data['subcriptionId'], uid, true);
+      throw e;
+      // return BrainerySubscriptionInfo(
+      // data['planId'], null, data['subcriptionId'], uid, false);
     }
   }
 
   toMap() {
     Map resp = {};
-    resp['planId'] = planId;
+    resp['subcriptionId'] = subscriptionId;
+    resp['status'] = status;
     resp['startDate'] = startDate;
-    resp['subcriptionId'] = subcriptionId;
+    resp['planId'] = planId;
+    resp['statusUptatedOn'] = statusUptatedOn;
+    resp['nextBillingTime'] = nextBillingTime;
     resp['uid'] = uid;
-    resp[isSubscptionValid] = isSubscptionValid;
+    resp['access'] = access;
+    return resp;
   }
 
   static BrainerySubscriptionInfo emptyInfo(uid) {
-    return BrainerySubscriptionInfo(null, null, null, uid, false);
+    return BrainerySubscriptionInfo(
+        null, null, null, null, null, null, null, null, uid, false);
   }
 }

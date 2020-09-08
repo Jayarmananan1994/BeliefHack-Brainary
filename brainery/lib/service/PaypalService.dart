@@ -112,6 +112,22 @@ class PaypalServices {
     }
   }
 
+  Future<Map> cancelPayPalSubscription(subcriptionId) async {
+    try {
+      var response = await http.get(
+          PAYPAL_CANCEL_SUBSCRIPTION_URL + '/' + subcriptionId);
+      final Map body = convert.jsonDecode(response.body);
+      if (body["response"] == "success") {
+        return body;
+      } else {
+        throw Exception("Error in payment");
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Map<String, dynamic> _createPaypalRequestBody(
       planId, name, emailId, autorenewal) {
     return {

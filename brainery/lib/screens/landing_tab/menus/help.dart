@@ -59,7 +59,7 @@ class _HelpState extends State<Help> {
   }
 
   getInfoText() {
-    return "Dolor sit amet consectetur adipiscing elit duis tristique. A scelerisque purus semper eget duis at tellus at urna. Tellus id interdum velit laoreet.";
+    return "Our app has been designed to be basic and simple in use, though should you have an issue or concern, please explain in the box below and we will be happy to assist as soon as possible to help resolve any issue.";
   }
 
   submitQueryButton(context) {

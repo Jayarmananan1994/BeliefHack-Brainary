@@ -1,3 +1,4 @@
+import 'package:brainery/commons/constants.dart';
 import 'package:flutter/material.dart';
 
 class AboutLeon extends StatelessWidget {
@@ -14,25 +15,42 @@ class AboutLeon extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: () => Navigator.of(context).pop()),
+              IconButton(
+                  icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop()),
               SizedBox(height: 25),
               Container(
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                     Text('About ',
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300)),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300)),
                     Text('Leon Morton',
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold))
                   ])),
               SizedBox(height: 25),
-              ClipRRect( borderRadius: BorderRadius.circular(20), child: Container(color: Colors.white, height: height*0.4, width: width*0.7)),
+              Container(
+                width: 200,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(image: AssetImage(LEON_PROFILE_IMAGE)),
+                ),
+              ),
               SizedBox(height: 20),
-              Container(height: 10, width: 50,color: Colors.blue),
+              Container(height: 10, width: 50, color: Colors.blue),
               SizedBox(height: 20),
               Container(
-                width: 250,
-                child: Text(aboutContent(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+                width: width,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(aboutContent(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white)),
               )
             ],
           ),
@@ -41,8 +59,7 @@ class AboutLeon extends StatelessWidget {
     );
   }
 
-  String aboutContent(){
-    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In cursus turpis massa tincidunt. Ut sem viverra aliquet eget sit amet tellus. Eu ultrices vitae auctor eu.";
+  String aboutContent() {
+    return "Leon J Morton is the Founder of the BeliefHack Brainery, Creator of the Plasticity Programming Integrated Mind/Body stress management and performance enhancement curriculum, and Podcast Host. Leon is a seasoned Performance Psychology coach and Consultant with over 20 years working with organizations and high performing individuals ranging from an NFL Team, Super Bowl athletes, to corporate teams and one on one with people across the US. A father of two and a performing artist, Leon was inducted into the National Heritage Blues Hall of Fame in 2011.";
   }
-
 }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class BraineryDrawer extends StatelessWidget {
   final List<BraineryMenu> menus = [
     BraineryMenu("Profile", Profile.PATH),
-    BraineryMenu("Account", Profile.PATH),
     BraineryMenu("Reminder", Profile.PATH),
     BraineryMenu("Subscriptions", Payment.PATH)
   ];

@@ -9,6 +9,7 @@ import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Lesson extends StatefulWidget {
   @override
@@ -118,15 +119,9 @@ class _LessonState extends State<Lesson> {
           Positioned.fill(
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
-                child: Image.network(lesson.thumbnailImageUrl,
-                    width: _width, fit: BoxFit.fitHeight)),
+                child: (lesson.thumbnailImageUrl !=null) ? Image.network(lesson.thumbnailImageUrl,
+                    width: _width, fit: BoxFit.fitHeight) : Container( color: Colors.black, height: 100,)),
           ),
-          // Center(
-          //   child: IconButton(
-          //       icon: Icon(Icons.play_circle_outline, size: 50),
-          //       onPressed: () {},
-          //       color: Colors.white),
-          // ),
           Positioned(
             bottom: 30,
             left: 30,
@@ -165,8 +160,9 @@ class _LessonState extends State<Lesson> {
             separatorBuilder: (BuildContext context, int index) =>
                 Divider(thickness: 1, indent: 15, endIndent: 15),
             itemBuilder: (context, index) {
+              var imageUrl = lessons[index].thumbnailImageUrl;
               return ListTile(
-                leading: Image.network(lessons[index].thumbnailImageUrl),
+               leading: (imageUrl!=null && imageUrl.isNotEmpty) ? _imageBox(lessons[index].thumbnailImageUrl) : Container( color: Colors.black, height: 100, width: 100,),
                 subtitle: Text(lessons[index].length,
                     style: TextStyle(color: Colors.black)),
                 title: Text(lessons[index].title,
@@ -233,5 +229,12 @@ class _LessonState extends State<Lesson> {
     });
     _braineryUserService.updateFavoriteLesson();
     
+  }
+  _imageBox(url) {
+    return Container(
+      width: 100.0,
+      child: FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage, image: url, width: 100.0),
+    );
   }
 }

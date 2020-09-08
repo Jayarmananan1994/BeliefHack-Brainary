@@ -1,7 +1,14 @@
+import 'package:brainery/commons/ui/brainery_alert_dialog.dart';
+import 'package:brainery/commons/ui/brainery_button.dart';
 import 'package:brainery/commons/ui/loading_spinner.dart';
+import 'package:brainery/model/BrainerySubscriptionInfo.dart';
+import 'package:brainery/screens/landing_tab/menus/privacy.dart';
+import 'package:brainery/screens/landing_tab/menus/subscription_info_card.dart';
+import 'package:brainery/screens/landing_tab/menus/terms.dart';
 import 'package:brainery/screens/payment/payment_error.dart';
 import 'package:brainery/screens/payment/payment_success.dart';
 import 'package:brainery/screens/payment/paypal_subscription.dart';
+import 'package:brainery/service/PaypalService.dart';
 import 'package:brainery/service/brainery_user_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +16,8 @@ import 'package:intl/intl.dart';
 
 class Payment extends StatefulWidget {
   static const String PATH = '/payment';
-  static const String MONTH_PLAN = 'P-72154846EA606791TL33WRWY';
-  static const String YEAR_PLAN = 'P-72154846EA606791TL33WRWY';
+  static const String MONTH_PLAN = 'P-1P139113Y18878525L4SDYAY';
+  static const String YEAR_PLAN = 'P-1TG08431G6640442UL4SY4QA';
 
   @override
   _PaymentState createState() => _PaymentState();
@@ -19,54 +26,125 @@ class Payment extends StatefulWidget {
 class _PaymentState extends State<Payment> {
   double _width;
   Scenario scenario = Scenario.SUBSCRIPTION_PAGE;
+  bool _isLoading = false;
+  bool showSubscriptionPage = false;
 
   final BraineryUserService _braineryUserService =
       locator<BraineryUserService>();
 
+  final PaypalServices _paypalServices = locator<PaypalServices>();
+
   @override
   Widget build(BuildContext context) {
+    print('Building widget again');
     _width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: _getPageContent(),
     );
   }
 
-  _getPageContent(){
-    if(scenario==Scenario.PAYMENT_SUCCESS){
+  _getPageContent() {
+    if (scenario == Scenario.PAYMENT_SUCCESS) {
       return PaymentSucess();
-    }else if(scenario==Scenario.PAYMENT_FAILURE){
+    } else if (scenario == Scenario.PAYMENT_FAILURE) {
       return PaymentError();
-    }else{
-      return _subscriptionPage();
+    } else {
+      return FutureBuilder<BrainerySubscriptionInfo>(
+          future: _braineryUserService.fetchSubscriptionInfo(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var data = snapshot.data;
+              if (!data.access || showSubscriptionPage) {
+                return _subscriptionPage();
+              } else {
+                return _subscriptionInfoPage(data);
+              }
+            } else {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          });
+      //_braineryUserService.fetchSubscriptionInfo();
+      //return _subscriptionPage();
     }
   }
 
-  _subscriptionPage(){
+  _subscriptionPage() {
     return Container(
-          color: Color(0xff2c4083),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              SizedBox(height: 20),
-              Row(children: <Widget>[
+      color: Color(0xff2c4083),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          SizedBox(height: 20),
+          Row(children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop())
+          ]),
+          SizedBox(height: 20),
+          _title(),
+          _features(),
+          _buySubscriptionButton(
+              context, 'SUBSCRIPTION for \$ 10/Month', Payment.MONTH_PLAN),
+          _buySubscriptionButton(
+              context, 'SUBSCRIPTION for \$ 100/Year', Payment.YEAR_PLAN),
+          _termsAndPrivacy(),
+          _disclaimerMessage(),
+          SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  _subscriptionInfoPage(BrainerySubscriptionInfo data) {
+    return Container(
+      color: Color(0xff2c4083),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 40),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
                 IconButton(
                     icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop())
+                    onPressed: () => Navigator.of(context).pop()),
+                Container(
+                    child: Center(
+                        child: Text('Subscription ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)))),
+                Container(width: 30)
               ]),
-              SizedBox(height: 20),
-              _title(),
-              _features(),
-              _buySubscriptionButton(
-                  context, 'SUBSCRIPTION for \$ 10/Month', Payment.MONTH_PLAN),
-              _buySubscriptionButton(
-                  context, 'SUBSCRIPTION for \$ 100/Year', Payment.YEAR_PLAN),
-              _termsAndPrivacy(),
-              _disclaimerMessage(),
-              SizedBox(height: 20),
-            ],
-          ),
-        );
+          SizedBox(height: 20),
+          Text(data.access ? 'Current plan' : 'Previously purchased plan',
+              style: TextStyle(color: Colors.white, fontSize: 16)),
+          SizedBox(height: 10),
+          SubscriptionInfoCard(subscriptionInfo: data),
+          (data.status != 'CANCELLED')
+              ? _cancelButton(data.subscriptionId)
+              : _subscribeButton()
+        ],
+      ),
+    );
+  }
+
+  _cancelButton(subscriptionId) {
+    return BraineryButton(
+        buttonAction: () => _cancelSubscription(subscriptionId),
+        buttonText: (!_isLoading) ? 'Cancel Subscription' : 'Cancelling..');
+  }
+
+  _subscribeButton() {
+    return BraineryButton(
+        buttonAction: _gotoSubscribePage, buttonText: 'Subscribe');
+    //return RaisedButton(onPressed: (){}, child: Text('Subscribe'));
   }
 
   _title() {
@@ -174,9 +252,8 @@ class _PaymentState extends State<Payment> {
   }
 
   _paymentOnFinish(Map paymentResponse, planId) async {
-   
     showLoadingDialog(context);
-   
+
     if (paymentResponse["subscription_id"] != null) {
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
       var startDate = formatter.format(DateTime.now());
@@ -186,19 +263,20 @@ class _PaymentState extends State<Payment> {
         scenario = Scenario.PAYMENT_SUCCESS;
       });
     } else {
-       setState(() =>scenario = Scenario.PAYMENT_FAILURE);
+      setState(() => scenario = Scenario.PAYMENT_FAILURE);
     }
-     Navigator.pop(context);
+    Navigator.pop(context);
   }
-
 
   _termsAndPrivacy() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('Terms', style: TextStyle(color: Colors.white)),
+        GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(Terms.PATH),
+            child: Text('Terms', style: TextStyle(color: Colors.white))),
         SizedBox(width: 20),
-        Text('Privacy', style: TextStyle(color: Colors.white))
+        GestureDetector(  onTap: () => Navigator.of(context).pushNamed(Privacy.PATH), child: Text('Privacy', style: TextStyle(color: Colors.white)))
       ],
     );
   }
@@ -211,10 +289,51 @@ class _PaymentState extends State<Payment> {
             style: TextStyle(color: Colors.grey, fontSize: 16),
             textAlign: TextAlign.center));
   }
+
+  _cancelSubscription(subscriptionId) async {
+    setState(() => _isLoading = true);
+    _paypalServices
+        .cancelPayPalSubscription(subscriptionId)
+        .then((value) => cancelationSuccessAction())
+        .catchError((error) => cancelationFailureAction());
+  }
+
+  _gotoSubscribePage() {
+    print(">>> subscribe page");
+    setState(() {
+      showSubscriptionPage = true;
+      scenario = Scenario.SUBSCRIPTION_PAGE;
+    });
+  }
+
+  cancelationFailureAction() {
+    Future<bool> dialogRef = showDialog(
+        context: context,
+        child: BraineryAlertDialog(
+            title: 'Alert!',
+            content:
+                'Your request to cancel the subscription could not be handled. Please try again later.',
+            confirmText: 'Ok'));
+    dialogRef.then((value) {
+      print('dialog closed');
+      _braineryUserService.resetSubscriptionInfo();
+      setState(() => _isLoading = false);
+    });
+  }
+
+  cancelationSuccessAction() {
+    Future<bool> dialogRef = showDialog(
+        context: context,
+        child: BraineryAlertDialog(
+            title: 'Info!',
+            content: 'Your subscription has been cancelled.',
+            confirmText: 'Ok'));
+    dialogRef.then((value) {
+      print('dialog closed');
+      _braineryUserService.resetSubscriptionInfo();
+      setState(() => _isLoading = false);
+    });
+  }
 }
 
-enum Scenario{
-  SUBSCRIPTION_PAGE,
-  PAYMENT_FAILURE,
-  PAYMENT_SUCCESS
-}
+enum Scenario { SUBSCRIPTION_PAGE, PAYMENT_FAILURE, PAYMENT_SUCCESS }

@@ -5,6 +5,9 @@ import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:brainery/commons/constants.dart';
 
 class BraineryUserService {
   AuthService authService;
@@ -91,6 +94,10 @@ class BraineryUserService {
     return _subscriptionInfo;
   }
 
+  void resetSubscriptionInfo(){
+    _subscriptionInfo = null;
+  }
+
   forceUpdateSubscriptionInfo() async {
     BraineryUser user = await _authService().getCurrentSignedInUser();
     String uid = user.uid;
@@ -104,9 +111,14 @@ class BraineryUserService {
     return _cloudFunctions()
         .getHttpsCallable(functionName: 'getSubscriptionInfo')
         .call(param)
-        .then((value) {
-      print("Value" + value.data.toString());
-      info = BrainerySubscriptionInfo.fromDocumentSnapshot(value.data, uid);
+        .then((value) async {
+      print("Value:>>>>>" + value.data.toString());
+      var subscriptionId = value.data['subscriptionId'];
+      http.Response result =
+          await http.get(SUBSCRIPTION_INFO_URL + '/' + subscriptionId.toString());
+      Map apiResponse = convert.jsonDecode(result.body);
+      print("ApiRepsonse:"+apiResponse.toString());
+      info = BrainerySubscriptionInfo.fromDocumentSnapshot(apiResponse, uid);
       return info;
     }).catchError((e) {
       print("Error:" + e.toString());
@@ -142,5 +154,9 @@ class BraineryUserService {
     if (cloudFunctions != null) return cloudFunctions;
     cloudFunctions = CloudFunctions.instance;
     return cloudFunctions;
+  }
+
+  void clearUserCacheInfo() {
+    _subscriptionInfo = null;
   }
 }

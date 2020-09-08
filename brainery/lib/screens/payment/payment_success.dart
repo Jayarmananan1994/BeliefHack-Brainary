@@ -1,8 +1,13 @@
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:brainery/service/brainery_user_service.dart';
+import 'package:brainery/service_locator.dart';
 
 class PaymentSucess extends StatelessWidget {
   static const String PATH = '/payment-sucess';
+    final BraineryUserService _braineryUserService =
+      locator<BraineryUserService>();
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -26,14 +31,17 @@ class PaymentSucess extends StatelessWidget {
             SizedBox(height: 30),
             RaisedButton(
                 shape: StadiumBorder(),
-                onPressed: () => Navigator.of(context).pushNamed(LandingTab.PATH),
+                onPressed: (){
+                   _braineryUserService.resetSubscriptionInfo();
+                  Navigator.of(context).pushNamed(LandingTab.PATH);
+                },
                 child: Text('Home', style: TextStyle(color: Colors.white)),
                 color: _themeColor),
-            RaisedButton(
-                shape: StadiumBorder(),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Home', style: TextStyle(color: _themeColor)),
-                color: Colors.white)
+            // RaisedButton(
+            //     shape: StadiumBorder(),
+            //     onPressed: () => Navigator.of(context).pop(),
+            //     child: Text('Home', style: TextStyle(color: _themeColor)),
+            //     color: Colors.white)
           ],
         ),
     );

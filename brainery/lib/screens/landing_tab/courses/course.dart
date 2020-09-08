@@ -48,6 +48,8 @@ class _CourseState extends State<Course> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _themeColor = Theme.of(context).primaryColor;
+    //print(_subscriptionInfo);
+    //print(">>>>>>>>>>Subscription info:"+ _subscriptionInfo?.access.toString());
     return Container(
       child: FutureBuilder<Object>(
           future: _lessonService.getBraineryCourseList(),
@@ -56,7 +58,7 @@ class _CourseState extends State<Course> {
               var courses = snapshot.data;
               return Column(
                 children: <Widget>[
-                  _disclaimer(),
+                 ( _subscriptionInfo!=null && _subscriptionInfo.access) ? Container() : _disclaimer(),
                   coursePreviewSlide(courses),
                   Container(
                       padding:
@@ -120,8 +122,8 @@ class _CourseState extends State<Course> {
           Positioned.fill(
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
-                child: Image.network(course.previewImage,
-                    width: _width, fit: BoxFit.fitHeight)),
+                child: (course.previewImage!=null) ? Image.network( course.previewImage,
+                    width: _width, fit: BoxFit.fitHeight) :  Container(width: _width)),
           ),
           Positioned(
             bottom: 30,
@@ -167,7 +169,7 @@ class _CourseState extends State<Course> {
                     icon: Icon(_favIcon(courses[index].courseName),
                         color: _themeColor, size: 30),
                     onPressed: () => handleFav(courses[index])),
-                onTap: () => ( _subscriptionInfo!=null && _subscriptionInfo.isSubscptionValid) ? gotoCoursePage(courses[index]) : gotoPayment(),
+                onTap: () => ( _subscriptionInfo!=null && _subscriptionInfo.access) ? gotoCoursePage(courses[index]) : gotoPayment(),
               );
             }),
       ),
@@ -181,7 +183,7 @@ class _CourseState extends State<Course> {
         children: <Widget>[
           FadeInImage.memoryNetwork(
               placeholder: kTransparentImage, image: url, width: 100.0),
-          ( _subscriptionInfo !=null && _subscriptionInfo.isSubscptionValid)
+          ( _subscriptionInfo !=null && _subscriptionInfo.access)
               ? Container()
               : Align(
                   child: Icon(Icons.lock, size: 35, color: Colors.white),

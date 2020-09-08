@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     precacheImage(AssetImage(LOGO_IMAGE_PATH), context);
     precacheImage(AssetImage(SPLASH_SCREEN_IMAGE), context);
+    precacheImage(AssetImage(LEON_PROFILE_IMAGE), context);
     return MaterialApp(
       title: 'Brainery',
       onGenerateRoute: router.generateRoute,

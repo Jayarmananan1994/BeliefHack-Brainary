@@ -218,12 +218,13 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            (_isFavorite!=null) ?
             IconButton(icon: Icon( _isFavorite ? Icons.favorite : Icons.favorite_border, size: 35, color: Colors.white), onPressed: () { 
                setState(() {
                  _isFavorite = !_isFavorite;
                });
                widget.favoriteHandler(widget.lesson);
-             },)
+             },) : Container()
           ],
         ));
   }

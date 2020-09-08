@@ -11,4 +11,6 @@ abstract class AuthService {
   Future<BraineryUser> signinWithEmail(String email, String password);
 
   void setCurrentUser(BraineryUser user);
+
+  Future<void> sendPasswordResetEmail();
 }

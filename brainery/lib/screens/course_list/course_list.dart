@@ -1,5 +1,7 @@
 import 'package:brainery/model/BraineryCourse.dart';
 import 'package:brainery/model/BraineryLesson.dart';
+import 'package:brainery/screens/course_list/course_shimmer_layout.dart';
+import 'package:brainery/screens/landing_tab/lesson/lesson_video_player.dart';
 import 'package:brainery/service/lesson_and_course_service.dart';
 import 'package:brainery/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -72,32 +74,36 @@ class _CourseListState extends State<CourseList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Expanded(child: _courseContentListView(snapshot.data));
+            //return CourseShimmerLayout();
           } else if (snapshot.hasError) {
             return Text('Error fetching the data. Please try again later.');
           } else {
-            return Text('Fetching the Course content');
+            return CourseShimmerLayout();
           }
         });
   }
 
   _courseContentListView(List<BraineryLesson> lessons) {
-    
     return Container(
       child: MediaQuery.removePadding(
         removeTop: true,
         context: context,
         child: ListView.separated(
-            itemCount: lessons.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                Divider(thickness: 1, indent: 15, endIndent: 15),
-            itemBuilder: (context, index) {
-              var lesson = lessons[index];
-              return ListTile(
-                leading: _imageBox(lesson.thumbnailImageUrl),
-                title: Text(lesson.title, style: TextStyle(color: _themeColor, fontWeight: FontWeight.w600)),
-                subtitle: Text(lesson.length),
-              );
-            }),
+          itemCount: lessons.length,
+          separatorBuilder: (BuildContext context, int index) =>
+              Divider(thickness: 1, indent: 15, endIndent: 15),
+          itemBuilder: (context, index) {
+            var lesson = lessons[index];
+            return ListTile(
+              leading: _imageBox(lesson.thumbnailImageUrl),
+              title: Text(lesson.title,
+                  style: TextStyle(
+                      color: _themeColor, fontWeight: FontWeight.w600)),
+              subtitle: Text(lesson.length),
+              onTap: () => _openVideo(lesson),
+            );
+          },
+        ),
       ),
     );
   }
@@ -109,6 +115,19 @@ class _CourseListState extends State<CourseList> {
           placeholder: kTransparentImage, image: url, width: 100.0),
     );
   }
+
+  _openVideo(lesson) {
+     showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return SafeArea(
+                            child: LessonVideoPlayer(lesson,null,isFavorite: null));
+                      },
+                      isDismissible: false,
+                      isScrollControlled: true);
+  }
+
+
 
   // courseList() {}
 }

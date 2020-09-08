@@ -31,7 +31,6 @@ dependencies:
   shared_preferences: ^0.5.7+3
   video_player: ^0.10.11+1
   shimmer:
-  square_in_app_payments:
   http:
   http_auth:
   webview_flutter:
@@ -40,6 +39,9 @@ dependencies:
   transparent_image: ^1.0.0
   cached_network_image: ^1.1.1
   firebase_messaging: ^6.0.16
+  platform_action_sheet: ^0.0.3
+  audioplayers: ^0.15.1
+  url_launcher:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -65,6 +67,7 @@ flutter:
   assets:
      - assets/images/
      - assets/fonts/
+     - assets/sounds/
      
 
   # An image asset can refer to one or more resolution-specific "variants", see

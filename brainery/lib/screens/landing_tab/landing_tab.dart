@@ -1,6 +1,5 @@
 import 'package:brainery/commons/constants.dart';
 import 'package:brainery/commons/my_flutter_app_icons.dart';
-import 'package:brainery/commons/ui/loading_spinner.dart';
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/screens/landing_tab/brainery_drawer.dart';
 import 'package:brainery/screens/landing_tab/courses/course.dart';
@@ -29,9 +28,8 @@ class _LandingTabState extends State<LandingTab> {
     TabMenu(0, 'HOME', Icons.home),
     TabMenu(1, 'LESSONS', MyFlutterAppIcons.book_open),
     TabMenu(2, 'COURSES', MyFlutterAppIcons.library_books),
-    TabMenu(3, 'PODCAST', MyFlutterAppIcons.podcast),
-    TabMenu(4, 'TIMER', MyFlutterAppIcons.clock),
-    TabMenu(5, 'FAVORITES', Icons.favorite_border),
+    TabMenu(3, 'TIMER', MyFlutterAppIcons.clock),
+    TabMenu(4, 'FAVORITES', Icons.favorite_border),
   ];
 
   @override
@@ -86,10 +84,8 @@ class _LandingTabState extends State<LandingTab> {
       case 2:
         return titleForCoursesPage();
       case 3:
-        return titleForPodcastPage();
-      case 4:
         return titleForTimerPage();
-      case 5:
+      case 4:
         return titleForFavoritePage();
       default:
         return titleForHomePage();
@@ -125,10 +121,6 @@ class _LandingTabState extends State<LandingTab> {
     return Text('COURSES', style: TextStyle(color: Colors.white, fontSize: 16));
   }
 
-  titleForPodcastPage() {
-    return Text('PODCAST', style: TextStyle(color: Colors.white, fontSize: 16));
-  }
-
   titleForFavoritePage() {
     return Text('FAVORITES',
         style: TextStyle(color: Colors.white, fontSize: 16));
@@ -158,7 +150,6 @@ class _LandingTabState extends State<LandingTab> {
       Home(viewCourseAction: viewCourse),
       Lesson(),
       Course(),
-      Center(child: LoadingSpinner(radius: 15.0, dotRadius: 5.0)),
       Timer(),
       Favorites()
     ];

@@ -2,6 +2,7 @@ import 'package:brainery/commons/my_flutter_app_icons.dart';
 import 'package:brainery/commons/constants.dart';
 import 'package:brainery/screens/apptour/skip_button.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SlidePageTwo extends StatelessWidget {
   final defaultTextStyle = TextStyle(color: Color(0xff8b97bc), fontSize: 17);
@@ -50,7 +51,7 @@ class SlidePageTwo extends StatelessWidget {
       TextSpan(text: 'open the course or lesson\n'),
       TextSpan(text: 'individual page. Simply press\n'),
       TextSpan(text: 'play for each lesson as you desire.\n'),
-      TextSpan(text: 'If you would like to'),
+      TextSpan(text: 'If you would like to '),
       TextSpan(text: 'favorite ', style: boldStyle),
       TextSpan(text: 'any\n'),
       TextSpan(text: 'lesson simply press the '),
@@ -115,11 +116,25 @@ class SlidePageTwo extends StatelessWidget {
 
   _facebookIcon() {
     return Container(
-      margin: EdgeInsets.all(30),
+        margin: EdgeInsets.all(30),
         child: RaisedButton(
-            onPressed: () {},
-            color: Colors.blue,
-            child: Icon(MyFlutterAppIcons.facebook),
-            ));
+          onPressed: _launchFBProfile,
+          color: Colors.blue,
+          child: Icon(MyFlutterAppIcons.facebook),
+        ));
+  }
+
+  _launchFBProfile() async {
+    // var fbProtocolUrl = 'fb://profile/satyapsharmawebservices'; //'fb://profile/835248779872492';
+    var fallbackUrl = 'https://www.facebook.com/satyapsharmawebservices';
+    try {
+      bool launched = await launch(fallbackUrl, forceSafariVC: false);
+
+      if (!launched) {
+        await launch(fallbackUrl, forceSafariVC: false);
+      }
+    } catch (e) {
+      await launch(fallbackUrl, forceSafariVC: false);
+    }
   }
 }

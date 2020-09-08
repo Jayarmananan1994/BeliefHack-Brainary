@@ -21,7 +21,7 @@ class FireBaseAuthService extends AuthService {
         .call(newUser.toMap());
     return newUser;
   }
-
+  
   @override
   Future<BraineryUser> getCurrentSignedInUser() async {
     if (_currentSignedInUser == null) {
@@ -70,5 +70,10 @@ class FireBaseAuthService extends AuthService {
       _cloudFunctions = CloudFunctions.instance;
     }
     return _cloudFunctions;
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail() {
+     return getFirebaseAuth().sendSignInWithEmailLink(email: '', url: null, handleCodeInApp: null, iOSBundleID: null, androidPackageName: null, androidInstallIfNotAvailable: null, androidMinimumVersion: null);
   }
 }
