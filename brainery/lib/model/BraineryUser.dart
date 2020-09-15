@@ -5,9 +5,10 @@ class BraineryUser {
   String emailId;
   List<String> favoriteCourse;
   List<String> favoriteLessons;
+  String profileImage;
 
   BraineryUser(this.uid, this.name, this.emailId, this.favoriteLessons,
-      this.favoriteCourse);
+      this.favoriteCourse, this.profileImage);
 
   toMap() {
     Map map = new Map<String, dynamic>();
@@ -16,6 +17,7 @@ class BraineryUser {
     map['emailId'] = emailId;
     map['favoriteCourse'] = favoriteCourse;
     map['favoriteLessons'] = favoriteLessons;
+    map['profileImage'] = profileImage;
     return map;
   }
 
@@ -23,7 +25,7 @@ class BraineryUser {
     List<String> lessons = List<String>.from(value['favoriteLessons']);
     List<String> courses = List<String>.from(value['favoriteCourse']);
     BraineryUser user = BraineryUser(
-        value['uid'], value['name'], value['emailId'], lessons, courses);
+        value['uid'], value['name'], value['emailId'], lessons, courses, value['profileImage']);
     return user;
   }
 

@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:brainery/model/BraineryUser.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FireBaseAuthService extends AuthService {
   BraineryUser _currentSignedInUser;
   FirebaseAuth _firebaseAuth;
+  FirebaseStorage _firebaseStorage;
   CloudFunctions _cloudFunctions;
 
   @override
@@ -15,13 +19,13 @@ class FireBaseAuthService extends AuthService {
         .createUserWithEmailAndPassword(email: email, password: password);
 
     BraineryUser newUser =
-        new BraineryUser(result.user.uid, name, email, [], []);
+        new BraineryUser(result.user.uid, name, email, [], [], null);
     await getCloudFunctions()
         .getHttpsCallable(functionName: 'createBraineryUser')
         .call(newUser.toMap());
     return newUser;
   }
-  
+
   @override
   Future<BraineryUser> getCurrentSignedInUser() async {
     if (_currentSignedInUser == null) {
@@ -51,6 +55,13 @@ class FireBaseAuthService extends AuthService {
     return _firebaseAuth;
   }
 
+  FirebaseStorage getFirebaseStorage() {
+    if (_firebaseStorage == null) {
+      _firebaseStorage = FirebaseStorage.instance;
+    }
+    return _firebaseStorage;
+  }
+
   @override
   Future<void> signout() {
     _currentSignedInUser = null;
@@ -58,7 +69,8 @@ class FireBaseAuthService extends AuthService {
   }
 
   Future<BraineryUser> signinWithEmail(String email, String password) async {
-    await getFirebaseAuth().signInWithEmailAndPassword(email: email, password: password);
+    await getFirebaseAuth()
+        .signInWithEmailAndPassword(email: email, password: password);
     HttpsCallableResult callResult = await getCloudFunctions()
         .getHttpsCallable(functionName: 'getBraineryUser')
         .call();
@@ -73,7 +85,14 @@ class FireBaseAuthService extends AuthService {
   }
 
   @override
-  Future<void> sendPasswordResetEmail() {
-     return getFirebaseAuth().sendSignInWithEmailLink(email: '', url: null, handleCodeInApp: null, iOSBundleID: null, androidPackageName: null, androidInstallIfNotAvailable: null, androidMinimumVersion: null);
+  Future<void> sendPasswordResetEmail(emailId) {
+   return getFirebaseAuth().sendPasswordResetEmail(email: emailId);
   }
+
+  Future<StorageTaskSnapshot> uploadFile(path, File data) {
+    final StorageReference storageReference =
+        FirebaseStorage().ref().child(path);
+    return storageReference.putFile(data).onComplete;
+  }
+
 }

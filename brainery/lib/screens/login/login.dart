@@ -3,6 +3,7 @@ import 'package:brainery/commons/ui/error_dialog.dart';
 import 'package:brainery/commons/ui/loading_spinner.dart';
 import 'package:brainery/commons/validators.dart';
 import 'package:brainery/screens/landing_tab/landing_tab.dart';
+import 'package:brainery/screens/passwordreset/password_reset.dart';
 import 'package:brainery/screens/signup/signup.dart';
 import 'package:brainery/service/auth_service.dart';
 import 'package:brainery/service_locator.dart';
@@ -197,9 +198,12 @@ class _LoginState extends State<Login> {
           height: 10,
           color: Colors.blueGrey,
           padding: EdgeInsets.symmetric(horizontal: 10)),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text('Forgot Your Password ?'),
+      InkWell(
+        onTap: ()=> Navigator.popAndPushNamed(context, PasswordReset.PATH),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('Forgot Your Password ?'),
+        ),
       )
     ]);
   }

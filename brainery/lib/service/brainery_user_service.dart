@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brainery/model/BraineryFavorites.dart';
 import 'package:brainery/model/BrainerySubscriptionInfo.dart';
 import 'package:brainery/model/BraineryUser.dart';
@@ -89,7 +91,7 @@ class BraineryUserService {
   Future<BrainerySubscriptionInfo> fetchSubscriptionInfo() async {
     if (_subscriptionInfo == null) {
       var user = await _authService().getCurrentSignedInUser();
-      _subscriptionInfo = await _getSubscriptionInfo(user.uid);
+      _subscriptionInfo = (user !=null && user.uid!=null) ?  await _getSubscriptionInfo(user.uid) : null;
     }
     return _subscriptionInfo;
   }
@@ -125,13 +127,6 @@ class BraineryUserService {
       info = BrainerySubscriptionInfo.emptyInfo(uid);
       return info;
     });
-
-    //     .catchError((error) {
-    //   print(error);
-    //   info = BrainerySubscriptionInfo.emptyInfo(uid);
-    // });
-    // info = BrainerySubscriptionInfo.fromDocumentSnapshot(value.data, uid);
-    // return info;
   }
 
   Future<BraineryUser> getCurrentUser() {
@@ -158,5 +153,13 @@ class BraineryUserService {
 
   void clearUserCacheInfo() {
     _subscriptionInfo = null;
+  }
+
+  Future<HttpsCallableResult>  uploadProfileImage(String imageUrl) async {
+    BraineryUser user = await getCurrentUser();
+    var param = {"uid": user.uid, "profileImage": imageUrl};
+      return _cloudFunctions()
+        .getHttpsCallable(functionName: 'updateProfilePic')
+        .call(param);
   }
 }

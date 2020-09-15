@@ -7,10 +7,12 @@ import 'package:brainery/screens/landing_tab/menus/faq.dart';
 import 'package:brainery/screens/landing_tab/menus/help.dart';
 import 'package:brainery/screens/landing_tab/menus/privacy.dart';
 import 'package:brainery/screens/landing_tab/menus/profiles.dart';
+import 'package:brainery/screens/landing_tab/menus/reminder.dart';
 import 'package:brainery/screens/landing_tab/menus/subscription_info.dart';
 import 'package:brainery/screens/landing_tab/menus/terms.dart';
 import 'package:brainery/screens/landing_tab/timer/timer_start.dart';
 import 'package:brainery/screens/login/login.dart';
+import 'package:brainery/screens/passwordreset/password_reset.dart';
 import 'package:brainery/screens/payment/payment.dart';
 import 'package:brainery/screens/payment/payment_error.dart';
 import 'package:brainery/screens/payment/payment_success.dart';
@@ -63,6 +65,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => Terms());
     case Privacy.PATH:
       return MaterialPageRoute(builder: (context) => Privacy());
+     case Remnider.PATH:
+      return MaterialPageRoute(builder: (context) => Remnider());
+    case PasswordReset.PATH:
+      return MaterialPageRoute(builder: (context)=> PasswordReset());
     case SubscriptionInfo.PATH:
       return MaterialPageRoute(builder: (context) => SubscriptionInfo());
     case TimerStart.PATH:

@@ -92,7 +92,7 @@ exports.createSubscriptionForUser = functions.https.onCall((data, context) => {
   });
 });
 
-exports.getSubscriptionInfo =  functions.https.onCall((data, context) => {
+exports.getSubscriptionInfo = functions.https.onCall((data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
       'while authenticated.');
@@ -102,7 +102,7 @@ exports.getSubscriptionInfo =  functions.https.onCall((data, context) => {
   const collectionRef = db.collection('subscriptions').doc(uid);
   return collectionRef.get().then(doc => {
     if (!doc.exists) {
-      throw new functions.https.HttpsError('NO_SUBSCRIPTION','User dont have a subscription');
+      throw new functions.https.HttpsError('NO_SUBSCRIPTION', 'User dont have a subscription');
     }
     console.log(doc.data());
     return doc.data();
@@ -128,7 +128,7 @@ exports.getCourseContent = functions.https.onCall((data, context) => {
 
 });
 
-exports.updateFavoriteLesson =  functions.https.onCall((data, context) => {
+exports.updateFavoriteLesson = functions.https.onCall((data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
       'while authenticated.');
@@ -136,8 +136,8 @@ exports.updateFavoriteLesson =  functions.https.onCall((data, context) => {
   console.log(data);
   const uid = context.auth.uid;
   const docRef = db.collection('users').doc(uid);
-  return  docRef.update({'favoriteLessons': data['favoriteLessons']}).then(() => {
-    return {'status': 'success'};
+  return docRef.update({ 'favoriteLessons': data['favoriteLessons'] }).then(() => {
+    return { 'status': 'success' };
   }).catch(err => {
     console.log('Error getting document', err);
     throw new functions.https.HttpsError('failed-precondition', 'Invalid User id');
@@ -145,7 +145,7 @@ exports.updateFavoriteLesson =  functions.https.onCall((data, context) => {
 });
 
 
-exports.updateFavoriteCourse =  functions.https.onCall((data, context) => {
+exports.updateFavoriteCourse = functions.https.onCall((data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
       'while authenticated.');
@@ -153,8 +153,23 @@ exports.updateFavoriteCourse =  functions.https.onCall((data, context) => {
   console.log(data);
   const uid = context.auth.uid;
   const docRef = db.collection('users').doc(uid);
-  return  docRef.update({'favoriteCourse': data['favoriteCourse']}).then(() => {
-    return {'status': 'success'};
+  return docRef.update({ 'favoriteCourse': data['favoriteCourse'] }).then(() => {
+    return { 'status': 'success' };
+  }).catch(err => {
+    console.log('Error getting document', err);
+    throw new functions.https.HttpsError('failed-precondition', 'Invalid User id');
+  });
+});
+
+exports.updateProfilePic = functions.https.onCall((data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+  const uid = context.auth.uid;
+  const docRef = db.collection('users').doc(uid);
+  return docRef.update({ 'profileImage': data['profileImage'] }).then(() => {
+    return { 'status': 'success' };
   }).catch(err => {
     console.log('Error getting document', err);
     throw new functions.https.HttpsError('failed-precondition', 'Invalid User id');

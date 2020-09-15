@@ -12,5 +12,5 @@ abstract class AuthService {
 
   void setCurrentUser(BraineryUser user);
 
-  Future<void> sendPasswordResetEmail();
+  Future<void> sendPasswordResetEmail(emailId);
 }

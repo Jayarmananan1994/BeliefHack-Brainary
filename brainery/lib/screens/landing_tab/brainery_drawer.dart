@@ -1,11 +1,12 @@
 import 'package:brainery/screens/landing_tab/menus/profiles.dart';
+import 'package:brainery/screens/landing_tab/menus/reminder.dart';
 import 'package:brainery/screens/payment/payment.dart';
 import 'package:flutter/material.dart';
 
 class BraineryDrawer extends StatelessWidget {
   final List<BraineryMenu> menus = [
     BraineryMenu("Profile", Profile.PATH),
-    BraineryMenu("Reminder", Profile.PATH),
+    BraineryMenu("Reminder", Remnider.PATH),
     BraineryMenu("Subscriptions", Payment.PATH)
   ];
 
